@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/setup.sh

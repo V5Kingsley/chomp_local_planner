@@ -1,0 +1,67 @@
+[
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dchomp_local_planner_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_planner.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_planner.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dchomp_local_planner_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/chomp_local_planner.dir/src/chomp_planner_ros.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_planner_ros.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_planner_ros.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dchomp_car_trajectory_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/chomp_car_trajectory.dir/src/chomp_car_trajectory.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_car_trajectory.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_car_trajectory.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dchomp_optimizer_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/chomp_optimizer.dir/src/chomp_optimizer.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_optimizer.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_optimizer.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dstomp_cost_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/stomp_cost.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/stomp_cost.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build",
+  "command": "/usr/bin/g++-7  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"chomp_local_planner\\\" -Dchomp_parameters_EXPORTS -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include -I/home/caiyufeng/turtlebot3_ws/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/costmap_2d/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_ros/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_msgs/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/voxel_grid/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/nav_core/include -I/home/caiyufeng/turtlebot3_ws/src/geometry2/tf2_geometry_msgs/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/opt/ros/melodic/share/orocos_kdl/cmake/../../../include -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/chomp_parameters.dir/src/chomp_parameters.cpp.o -c /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_parameters.cpp",
+  "file": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_parameters.cpp"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /usr/src/googletest/googlemock/src/gmock_main.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_main_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /usr/src/googletest/googletest/src/gtest_main.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/g++-7  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+}
+]

@@ -1,0 +1,8 @@
+prefix=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel
+
+Name: chomp_local_planner
+Description: Description of chomp_local_planner
+Version: 0.0.0
+Cflags: -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/include -I/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/include
+Libs: -L/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/devel/lib -lchomp_local_planner
+Requires: base_local_planner dynamic_reconfigure nav_msgs pluginlib sensor_msgs roscpp tf2 tf2_ros

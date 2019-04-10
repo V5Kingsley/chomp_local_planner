@@ -1,0 +1,7 @@
+<library path="libchomp_local_planner">
+  <class name="chomp_local_planner/CHOMPPlannerROS" type="chomp_local_planner::CHOMPPlannerROS" base_class_type="nav_core::BaseLocalPlanner">
+    <description>
+      A implementation of a local planner using either a chomp approach based on configuration parameters.
+    </description>
+  </class>
+</library>

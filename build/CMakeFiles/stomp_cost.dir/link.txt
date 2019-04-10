@@ -1,0 +1,1 @@
+/usr/bin/g++-7 -fPIC -g  -shared -Wl,-soname,libstomp_cost.so -o devel/lib/libstomp_cost.so CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o 
