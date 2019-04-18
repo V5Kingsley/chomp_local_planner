@@ -120,6 +120,7 @@ devel/lib/libchomp_local_planner.so: devel/lib/libchomp_car_trajectory.so
 devel/lib/libchomp_local_planner.so: devel/lib/libchomp_parameters.so
 devel/lib/libchomp_local_planner.so: devel/lib/libchomp_optimizer.so
 devel/lib/libchomp_local_planner.so: devel/lib/libstomp_cost.so
+devel/lib/libchomp_local_planner.so: devel/lib/libchomp_obstalce_layer.so
 devel/lib/libchomp_local_planner.so: /home/caiyufeng/turtlebot3_ws/devel/lib/libbase_local_planner.so
 devel/lib/libchomp_local_planner.so: /home/caiyufeng/turtlebot3_ws/devel/lib/libtrajectory_planner_ros.so
 devel/lib/libchomp_local_planner.so: /home/caiyufeng/turtlebot3_ws/devel/lib/libcostmap_2d.so

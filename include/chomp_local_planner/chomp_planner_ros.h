@@ -6,9 +6,9 @@
 
 #include <tf2_ros/buffer.h>
 
+#include <chomp_local_planner/CHOMPPlannerConfig.h>
 #include <dwa_local_planner/DWAPlannerConfig.h>
 #include <dynamic_reconfigure/server.h>
-#include <chomp_local_planner/CHOMPPlannerConfig.h>
 
 #include <angles/angles.h>
 
@@ -33,7 +33,10 @@ public:
 
   void initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros);
 
-  ~CHOMPPlannerROS(){ delete dsrv_; };
+  ~CHOMPPlannerROS()
+  {
+    delete dsrv_;
+  };
 
   bool computeVelocityCommands(geometry_msgs::Twist &cmd_vel);
 
@@ -84,9 +87,8 @@ private:
   ros::Publisher vel_pub_;
   ros::NodeHandle nh;
 
-  void costmap_test();  
-
+  void costmap_test();
 };
 };  // namespace chomp_local_planner
 
-#endif
+#endif  //  CHOMP_LOCAL_PLANNER_CHOMP_PLANNER_ROS_H_

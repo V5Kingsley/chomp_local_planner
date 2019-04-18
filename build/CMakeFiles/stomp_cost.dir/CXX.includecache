@@ -26,15 +26,21 @@ chomp_local_planner/chomp_car_trajectory.h
 vector
 -
 
-/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/stomp_cost.cpp
-chomp_local_planner/stomp_cost.h
+/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/logger.h
+iostream
 -
+
+/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/stomp_cost.cpp
 chomp_local_planner/chomp_utils.h
+-
+chomp_local_planner/stomp_cost.h
 -
 eigen3/Eigen/LU
 -
 iostream
 -
+logger.h
+/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/logger.h
 
 /opt/ros/melodic/include/geometry_msgs/Point.h
 string

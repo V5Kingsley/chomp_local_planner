@@ -3,6 +3,7 @@
 
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o
  ../include/chomp_local_planner/chomp_car_trajectory.h
+ ../include/chomp_local_planner/chomp_obstacle_layer.h
  ../include/chomp_local_planner/chomp_optimizer.h
  ../include/chomp_local_planner/chomp_parameters.h
  ../include/chomp_local_planner/chomp_planner.h

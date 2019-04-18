@@ -61,6 +61,7 @@
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/roscpp_generate_messages_cpp.dir
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/rebuild_cache.dir
+/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/chomp_obstalce_layer.dir
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/actionlib_generate_messages_cpp.dir
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/sensor_msgs_generate_messages_lisp.dir
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles/nav_msgs_generate_messages_cpp.dir

@@ -14,6 +14,14 @@ geometry_msgs/PoseStamped.h
 ros/ros.h
 -
 
+../include/chomp_local_planner/chomp_obstacle_layer.h
+costmap_2d/costmap_2d.h
+-
+eigen3/Eigen/Core
+-
+chomp_local_planner/chomp_parameters.h
+-
+
 ../include/chomp_local_planner/chomp_optimizer.h
 chomp_local_planner/chomp_car_trajectory.h
 -
@@ -25,17 +33,23 @@ chomp_local_planner/chomp_parameters.h
 -
 chomp_local_planner/stomp_cost.h
 -
+chomp_local_planner/chomp_obstacle_layer.h
+-
+base_local_planner/local_planner_util.h
+-
 
 ../include/chomp_local_planner/chomp_parameters.h
 ros/ros.h
 -
 boost/noncopyable.hpp
 -
+eigen3/Eigen/Core
+-
 
 ../include/chomp_local_planner/chomp_planner.h
-dwa_local_planner/DWAPlannerConfig.h
--
 chomp_local_planner/CHOMPPlannerConfig.h
+-
+dwa_local_planner/DWAPlannerConfig.h
 -
 Eigen/Core
 -
@@ -79,11 +93,11 @@ boost/thread.hpp
 -
 tf2_ros/buffer.h
 -
+chomp_local_planner/CHOMPPlannerConfig.h
+-
 dwa_local_planner/DWAPlannerConfig.h
 -
 dynamic_reconfigure/server.h
--
-chomp_local_planner/CHOMPPlannerConfig.h
 -
 angles/angles.h
 -
@@ -610,6 +624,8 @@ tf/tf.h
 chomp_local_planner/chomp_utils.h
 -
 chomp_local_planner/chomp_optimizer.h
+-
+chomp_local_planner/chomp_obstacle_layer.h
 -
 
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_planner_ros.cpp

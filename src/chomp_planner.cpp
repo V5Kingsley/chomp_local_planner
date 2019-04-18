@@ -17,47 +17,9 @@
 
 #include <chomp_local_planner/chomp_optimizer.h>
 
+//#include <chomp_local_planner/chomp_obstacle.h>
 
-namespace chomp_trajectory
-{
-ChompTrajectory::ChompTrajectory(double timeval, unsigned int point_num, std::vector<geometry_msgs::PoseStamped> &input_path, double linVel, double angVel, double angle)
-	:	input_path_(input_path), 
-		timeval_(timeval),
-		point_num_(point_num)
-{
-	output_path_.resize(point_num_);
-	//delta_t_ = timeval / static_cast<double>(point_num - 1);
-  //delta_t_ = timeval;
-  delta_t_ = 0.3;
-	output_path_[0] = Vector2d(linVel, angVel);
-	angleAll.resize(point_num_);
-	angleAll[0] = angle;
-
-}
-
-vector<Vector2d> ChompTrajectory::getTrajectory()
-{
-	for(unsigned int i = 1; i < point_num_; i++)
-	{
-    double delta_x = input_path_[i].pose.position.x - input_path_[i-1].pose.position.x;
-    double delta_y = input_path_[i].pose.position.y - input_path_[i-1].pose.position.y;
-
-		double linVel = sqrt( (delta_x*delta_x + delta_y*delta_y) / (delta_t_*delta_t_));
-
-		double angle = atan2(delta_y, delta_x);
-
-		angleAll[i] = angle;
-
-		double angVel = (angle - angleAll[i-1]) / delta_t_;
-
-		output_path_[i] = Vector2d(linVel, angVel);
-
-   // ROS_INFO("output_path: %f, %f", output_path_[i][0], output_path_[i][1]);
-	}	
-
-	return output_path_;
-}
-}
+#include <chomp_local_planner/chomp_obstacle_layer.h>
 
 namespace chomp_local_planner
 {
@@ -105,6 +67,7 @@ void CHOMPPlanner::updatePlanAndLocalCosts(const geometry_msgs::PoseStamped& glo
     global_plan_[i] = new_plan[i]; 
   }
   
+  footprint_ = footprint_spec;
 }
 
 
@@ -148,99 +111,37 @@ std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
           std::vector<Vector2d>& drive_velocities, double yaw_initial)
 {
   ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlanner findBestPath");
-  //chomp_trajectory::ChompTrajectory trajectory(sim_period_, global_plan_.size(), global_plan_, 0, 0, yaw_initial);
   
-  //drive_velocities = trajectory.getTrajectory();
+  chomp_car_trajectory::ChompTrajectory trajectory(global_plan_, yaw_initial, sim_period_);
 
-
-/*
-  vector<double> linVel;
-  vector<double> angVel;
-  for (int i = 0; i < drive_velocities.size(); i++)
-  {
-    linVel.push_back(drive_velocities[i][0]);
-    angVel.push_back(drive_velocities[i][1]);
-  }
-
-  double x = 0.0;
-  double y = 0.0;
-  double th = yaw_initial;
-  nav_msgs::Path outPath;
-  ros::Time current_time, last_time;
-  current_time = ros::Time::now();
-  last_time = ros::Time::now();
-  outPath.header.stamp = current_time;
-  outPath.header.frame_id = "odom";
-
-  for (int i = 0; i < drive_velocities.size(); i++)
-  {
-    current_time = ros::Time::now();
-
-   // double dt = (current_time - last_time).toSec();
-    //double dt = sim_period_;
-    double dt = 0.3;
-    double delta_x = drive_velocities[i][0] * cos(th) * dt;
-    double delta_y = drive_velocities[i][0] * sin(th) * dt;
-    double delta_th = drive_velocities[i][1] * dt;
-
-    ROS_INFO("vel: %f, %f", drive_velocities[i][0], drive_velocities[i][1]);
-
-    x += delta_x;
-    y += delta_y;
-    th += delta_th;
-
-    geometry_msgs::PoseStamped this_pose_stamped;
-    this_pose_stamped.pose.position.x = x;
-    this_pose_stamped.pose.position.y = y;
-
-    geometry_msgs::Quaternion goal_quat = tf::createQuaternionMsgFromYaw(th);
-    this_pose_stamped.pose.orientation.x = goal_quat.x;
-    this_pose_stamped.pose.orientation.y = goal_quat.y;
-    this_pose_stamped.pose.orientation.z = goal_quat.z;
-    this_pose_stamped.pose.orientation.w = goal_quat.w;
-
-    this_pose_stamped.header.stamp = current_time;
-    this_pose_stamped.header.frame_id = "odom";
-
-    outPath.poses.push_back(this_pose_stamped);
-    preGlobalPath_pub.publish(outPath);
-    last_time = current_time;
-    ros::Duration(0.05);
-  }*/
-  
-  ChompCarTrajectory::ChompTrajectory trajectory(global_plan_, yaw_initial, sim_period_);
-
-  //std::cout<<"original trajectory:"<<std::endl;
-  //std::cout<<trajectory.getTrajectory()<<std::endl;
-  /*
-  std::cout<<"start index: "<<trajectory.getStartIndex()<<endl;
-  std::cout<<"end index: "<<trajectory.getEndIndex()<<endl;
-  std::cout<<"num points: "<<trajectory.getNumPoints()<<endl;
-  cout<<"free num points: "<<trajectory.getNumFreePoints()<<endl;
-  cout<<"get position trajectroy: "<<trajectory.getPositionTrajectory(0)<<endl;
-  cout<<"---------------------"<<endl;
-
-  ChompCarTrajectory::ChompTrajectory group_trajectory(trajectory, DIFF_RULE_LENGTH);
-  std::cout<<"group_trajectory: "<<group_trajectory.getTrajectory()<<endl;
-  std::cout<<"start index: "<<group_trajectory.getStartIndex()<<endl;
-  std::cout<<"end index: "<<group_trajectory.getEndIndex()<<endl;
-  std::cout<<"num points: "<<group_trajectory.getNumPoints()<<endl;
-  cout<<"free num points: "<<group_trajectory.getNumFreePoints()<<endl;
-  cout<<"get position trajectroy: "<<group_trajectory.getPositionTrajectory(0)<<endl;
-  cout<<"get free trajectory block: "<<group_trajectory.getFreeTrajectoryBlock()<<endl;
-  cout<<"get free joint trajectory block: "<<group_trajectory.getFreePositionTrajectoryBlock(1)<<endl;*/
-
-
-  ChompOptimizer chompOptimizer(&trajectory);
+  ChompOptimizer chompOptimizer(&trajectory, planner_util_);
   chompOptimizer.optimize();
 
+  /*chomp_obstacle::ChompObstacle chomp_obstacle(planner_util_->getCostmap(), 0.5);
   Eigen::MatrixXd local_trajectory = trajectory.getTrajectory();
+
+  chomp_obstacle.viewCostMap();
+  double wx,wy,distance;
+  for(int i = 0; i < trajectory.getNumPoints(); ++i)
+  {
+    global_plan_[i].pose.position.x = local_trajectory(i, 0);
+    global_plan_[i].pose.position.y = local_trajectory(i, 1);
+    chomp_obstacle.getMinDistanceAndCoordinate(local_trajectory(i, 0), local_trajectory(i, 1), distance, wx, wy);
+  }
+  chomp_obstacle.viewCostMap();*/
+
+  //chomp_obstacle_layer::ChompObstacleLayer obstacle_layer(planner_util_->getCostmap(), 0.3);
+  
+  //obstacle_layer.viewCostMap();
+  //obstacle_layer.viewObstacleCells();
+
+  Eigen::MatrixXd local_trajectory = trajectory.getTrajectory();
+  double wx,wy,distance;
   for(int i = 0; i < trajectory.getNumPoints(); ++i)
   {
     global_plan_[i].pose.position.x = local_trajectory(i, 0);
     global_plan_[i].pose.position.y = local_trajectory(i, 1);
   }
-
   return global_plan_;
 }
 

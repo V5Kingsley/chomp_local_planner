@@ -896,6 +896,19 @@ roscpp_generate_messages_cpp/fast:
 .PHONY : roscpp_generate_messages_cpp/fast
 
 #=============================================================================
+# Target rules for targets named chomp_obstalce_layer
+
+# Build rule for target.
+chomp_obstalce_layer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 chomp_obstalce_layer
+.PHONY : chomp_obstalce_layer
+
+# fast build rule for target.
+chomp_obstalce_layer/fast:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/build
+.PHONY : chomp_obstalce_layer/fast
+
+#=============================================================================
 # Target rules for targets named actionlib_generate_messages_cpp
 
 # Build rule for target.
@@ -1351,6 +1364,33 @@ src/chomp_car_trajectory.cpp.s:
 	$(MAKE) -f CMakeFiles/chomp_car_trajectory.dir/build.make CMakeFiles/chomp_car_trajectory.dir/src/chomp_car_trajectory.cpp.s
 .PHONY : src/chomp_car_trajectory.cpp.s
 
+src/chomp_obstacle_layer.o: src/chomp_obstacle_layer.cpp.o
+
+.PHONY : src/chomp_obstacle_layer.o
+
+# target to build an object file
+src/chomp_obstacle_layer.cpp.o:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/src/chomp_obstacle_layer.cpp.o
+.PHONY : src/chomp_obstacle_layer.cpp.o
+
+src/chomp_obstacle_layer.i: src/chomp_obstacle_layer.cpp.i
+
+.PHONY : src/chomp_obstacle_layer.i
+
+# target to preprocess a source file
+src/chomp_obstacle_layer.cpp.i:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/src/chomp_obstacle_layer.cpp.i
+.PHONY : src/chomp_obstacle_layer.cpp.i
+
+src/chomp_obstacle_layer.s: src/chomp_obstacle_layer.cpp.s
+
+.PHONY : src/chomp_obstacle_layer.s
+
+# target to generate assembly for a file
+src/chomp_obstacle_layer.cpp.s:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/src/chomp_obstacle_layer.cpp.s
+.PHONY : src/chomp_obstacle_layer.cpp.s
+
 src/chomp_optimizer.o: src/chomp_optimizer.cpp.o
 
 .PHONY : src/chomp_optimizer.o
@@ -1555,6 +1595,7 @@ help:
 	@echo "... sensor_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_cpp"
 	@echo "... rebuild_cache"
+	@echo "... chomp_obstalce_layer"
 	@echo "... actionlib_generate_messages_cpp"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... nav_msgs_generate_messages_cpp"
@@ -1591,6 +1632,9 @@ help:
 	@echo "... src/chomp_car_trajectory.o"
 	@echo "... src/chomp_car_trajectory.i"
 	@echo "... src/chomp_car_trajectory.s"
+	@echo "... src/chomp_obstacle_layer.o"
+	@echo "... src/chomp_obstacle_layer.i"
+	@echo "... src/chomp_obstacle_layer.s"
 	@echo "... src/chomp_optimizer.o"
 	@echo "... src/chomp_optimizer.i"
 	@echo "... src/chomp_optimizer.s"

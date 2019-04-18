@@ -133,8 +133,8 @@ bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
   // update plan in dwa_planner even if we just stop and rotate, to allow checkTrajectory
   cp_->updatePlanAndLocalCosts(current_pose_, transformed_plan, costmap_ros_->getRobotFootprint());
 
-  //cost_map test
-  costmap_test();
+  // cost_map test
+  //costmap_test();
 
   if (latchedStopRotateController_.isPositionReached(&planner_util_, current_pose_))
   {
@@ -181,34 +181,22 @@ bool CHOMPPlannerROS::chompComputeVelocityCommands(geometry_msgs::PoseStamped &g
   geometry_msgs::PoseStamped robot_vel;
   odom_helper_.getRobotVel(robot_vel);
 
-  //ROS_DEBUG_NAMED("chomp_planner", "robot_vel: %f, %f, %f", robot_vel.pose.position.x, robot_vel.pose.position.y, robot_vel.pose.orientation);
+  // ROS_DEBUG_NAMED("chomp_planner", "robot_vel: %f, %f, %f", robot_vel.pose.position.x, robot_vel.pose.position.y,
+  // robot_vel.pose.orientation);
 
   std::vector<Vector2d> drive_cmds;
   std::string baseFrameID = costmap_ros_->getBaseFrameID();
 
-  std::vector<geometry_msgs::PoseStamped> local_plan = cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmds, odom_helper_.getOdomYaw());
+  std::vector<geometry_msgs::PoseStamped> local_plan =
+      cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmds, odom_helper_.getOdomYaw());
 
   publishLocalPlan(local_plan);
 
-  while(true)
+  if (true)
   {
-    ROS_INFO_ONCE("one loop control, point num: %d", drive_cmds.size());
+    ROS_INFO_ONCE("one loop control, point num: %d", static_cast<int>(drive_cmds.size()));
     ros::Duration(5.0).sleep();
   }
-  
-  geometry_msgs::Twist cmd_vel_compute;
-  for(int i = 0; i < drive_cmds.size(); ++i)
-  {
-    cmd_vel_compute.linear.x = drive_cmds[i][0];
-    cmd_vel_compute.angular.z = drive_cmds[i][1];
-    ROS_DEBUG_NAMED("chomp_planner", "robot_vel: %f, %f", cmd_vel_compute.linear.x, cmd_vel_compute.angular.z);
-    vel_pub_.publish(cmd_vel_compute);
-    ros::Duration(0.3).sleep();
-  }
-
-  cmd_vel.linear.x = drive_cmds[drive_cmds.size()-1][0];
-  cmd_vel.linear.y = drive_cmds[drive_cmds.size()-1][1];
-  
 
   return true;
 }
@@ -262,21 +250,19 @@ void CHOMPPlannerROS::reconfigureCB(CHOMPPlannerConfig &config, uint32_t level)
   cp_->reconfigure(config);
 }
 
-
-
 void CHOMPPlannerROS::costmap_test()
 {
   costmap_2d::Costmap2D *costmap = costmap_ros_->getCostmap();
   int size_x = costmap->getSizeInCellsX();
   int size_y = costmap->getSizeInCellsY();
   ROS_DEBUG_NAMED("costmap_test", "size_x: %d, size_y: %d", size_x, size_y);
-  for(int i = 0; i < size_x; ++i)
+  for (int i = 0; i < size_x; ++i)
   {
-    for(int j = 0; j < size_y; ++j)
+    for (int j = 0; j < size_y; ++j)
     {
-      std::cout<<(unsigned int)costmap->getCost(i, j)<<" "<<setw(4);
+      std::cout << (unsigned int)costmap->getCost(i, j) << " " << setw(4);
     }
-    std::cout<<std::endl;
+    std::cout << std::endl;
   }
 }
 

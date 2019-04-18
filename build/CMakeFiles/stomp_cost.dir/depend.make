@@ -4,6 +4,7 @@
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: ../include/chomp_local_planner/chomp_car_trajectory.h
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: ../include/chomp_local_planner/chomp_utils.h
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: ../include/chomp_local_planner/stomp_cost.h
+CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: ../src/logger.h
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: ../src/stomp_cost.cpp
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point.h
 CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o: /opt/ros/melodic/include/geometry_msgs/Pose.h

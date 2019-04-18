@@ -4,13 +4,12 @@
 #include <chomp_local_planner/chomp_car_trajectory.h>
 #include <vector>
 
-using namespace ChompCarTrajectory;
+using namespace chomp_car_trajectory;
 
-class StompCost {
+class StompCost
+{
 public:
-  StompCost(const ChompTrajectory &trajectory,
-            const std::vector<double> &derivative_costs,
-            double ridge_factor = 0.0);
+  StompCost(const ChompTrajectory &trajectory, const std::vector<double> &derivative_costs, double ridge_factor = 0.0);
 
   //  得到矩阵quad_cost_inv_中的最大值
   double getMaxQuadCostInvValue() const;
@@ -24,8 +23,7 @@ public:
   void scale(double scale);
 
   template <typename Derived>
-  void getDerivative(Eigen::MatrixXd::ColXpr joint_trajectory,
-                     Eigen::MatrixBase<Derived> &derivative) const;
+  void getDerivative(Eigen::MatrixXd::ColXpr joint_trajectory, Eigen::MatrixBase<Derived> &derivative) const;
 
 private:
   Eigen::MatrixXd quad_cost_full_;
@@ -35,17 +33,18 @@ private:
   Eigen::MatrixXd getDiffMatrix(int size, const double *diff_rule) const;
 };
 
-inline const Eigen::MatrixXd &StompCost::getQuadraticCostInverse() const {
+inline const Eigen::MatrixXd &StompCost::getQuadraticCostInverse() const
+{
   return quad_cost_inv_;
 }
-inline double
-StompCost::getCost(Eigen::MatrixXd::ColXpr position_trajectory) const {
+inline double StompCost::getCost(Eigen::MatrixXd::ColXpr position_trajectory) const
+{
   return position_trajectory.dot(quad_cost_full_ * position_trajectory);
 }
 
 template <typename Derived>
-void StompCost::getDerivative(Eigen::MatrixXd::ColXpr position_trajectory,
-                              Eigen::MatrixBase<Derived> &derivative) const {
+void StompCost::getDerivative(Eigen::MatrixXd::ColXpr position_trajectory, Eigen::MatrixBase<Derived> &derivative) const
+{
   derivative = (quad_cost_full_ * (2.0 * position_trajectory));
 }
 

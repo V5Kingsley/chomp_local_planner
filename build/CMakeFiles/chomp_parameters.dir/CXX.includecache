@@ -11,9 +11,13 @@ ros/ros.h
 -
 boost/noncopyable.hpp
 -
+eigen3/Eigen/Core
+-
 
 /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/chomp_parameters.cpp
 chomp_local_planner/chomp_parameters.h
+-
+cmath
 -
 
 /opt/ros/melodic/include/ros/advertise_options.h

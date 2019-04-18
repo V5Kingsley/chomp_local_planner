@@ -1,8 +1,8 @@
 #ifndef CHOMP_LOCAL_PALNNER_CHOMP_LOCAL_PLANNER_H_
 #define CHOMP_LOCAL_PALNNER_CHOMP_LOCAL_PLANNER_H_
 
-#include <dwa_local_planner/DWAPlannerConfig.h>
 #include <chomp_local_planner/CHOMPPlannerConfig.h>
+#include <dwa_local_planner/DWAPlannerConfig.h>
 
 #include <Eigen/Core>
 #include <vector>
@@ -41,15 +41,21 @@ public:
 
   bool setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan);
 
-  double getSimPeriod() { return sim_period_; }
+  double getSimPeriod()
+  {
+    return sim_period_;
+  }
 
   void updatePlanAndLocalCosts(const geometry_msgs::PoseStamped& global_pose,
                                const std::vector<geometry_msgs::PoseStamped>& new_plan,
                                const std::vector<geometry_msgs::Point>& footprint_spec);
 
-  void reconfigure(CHOMPPlannerConfig &config);
+  void reconfigure(CHOMPPlannerConfig& config);
 
-  std::vector<geometry_msgs::PoseStamped> findBestPath(const geometry_msgs::PoseStamped& global_pose, std::string baseFrameID, const geometry_msgs::PoseStamped& global_vel, std::vector<Vector2d>& drive_velocities, double yaw_initial);
+  std::vector<geometry_msgs::PoseStamped> findBestPath(const geometry_msgs::PoseStamped& global_pose,
+                                                       std::string baseFrameID,
+                                                       const geometry_msgs::PoseStamped& global_vel,
+                                                       std::vector<Vector2d>& drive_velocities, double yaw_initial);
 
 private:
   base_local_planner::LocalPlannerUtil* planner_util_;
@@ -60,43 +66,19 @@ private:
 
   boost::mutex configuration_mutex_;
 
-  //bool checkTrajectory(Eigen::Vector3f pos, Eigen::Vector3f vel, Eigen::Vector3f vel_samples);
+  // bool checkTrajectory(Eigen::Vector3f pos, Eigen::Vector3f vel, Eigen::Vector3f vel_samples);
 
-  //base_local_planner::SimpleTrajectoryGenerator generator_;
+  // base_local_planner::SimpleTrajectoryGenerator generator_;
 
-  //base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
+  // base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
 
   ros::NodeHandle nh;
   ros::Publisher preGlobalPath_pub;
-  
-};
 
+  std::vector<geometry_msgs::Point> footprint_;
+};
 
 }  // namespace chomp_local_planner
 
 
-namespace chomp_trajectory
-{
-class ChompTrajectory
-{
-public:
-  ChompTrajectory(double timeval, unsigned int point_num, std::vector<geometry_msgs::PoseStamped> &input_path, double linVel, double angVel, double angle);
-
-  vector<Vector2d> getTrajectory();
-  
-
-private:
-  std::vector<geometry_msgs::PoseStamped> &input_path_;
-  vector<Vector2d> output_path_;
-  double delta_t_;
-  double timeval_;
-  double linVel_;
-  double angVel_;
-  double angle_;
-  unsigned int point_num_;
-  vector<double> angleAll;
-};
-
-} // chomp_trajectory
-
-#endif
+#endif  //  CHOMP_LOCAL_PALNNER_CHOMP_LOCAL_PLANNER_H_

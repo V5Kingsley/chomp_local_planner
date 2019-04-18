@@ -113,6 +113,7 @@ CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/sensor_msgs_generate_messages
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/_catkin_empty_exported_target.dir/all
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/all
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/roscpp_generate_messages_cpp.dir/all
+CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/chomp_obstalce_layer.dir/all
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/actionlib_generate_messages_cpp.dir/all
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
 CMakeFiles/chomp_local_planner.dir/all: CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
@@ -154,7 +155,7 @@ all: CMakeFiles/chomp_local_planner.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/chomp_local_planner.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles 14
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/chomp_local_planner.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles 0
 .PHONY : CMakeFiles/chomp_local_planner.dir/rule
@@ -863,7 +864,7 @@ clean: CMakeFiles/nav_msgs_generate_messages_nodejs.dir/clean
 CMakeFiles/chomp_optimizer.dir/all:
 	$(MAKE) -f CMakeFiles/chomp_optimizer.dir/build.make CMakeFiles/chomp_optimizer.dir/depend
 	$(MAKE) -f CMakeFiles/chomp_optimizer.dir/build.make CMakeFiles/chomp_optimizer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=7,8 "Built target chomp_optimizer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=9,10 "Built target chomp_optimizer"
 .PHONY : CMakeFiles/chomp_optimizer.dir/all
 
 # Include target in all.
@@ -1412,7 +1413,7 @@ clean: CMakeFiles/costmap_2d_generate_messages_cpp.dir/clean
 CMakeFiles/stomp_cost.dir/all:
 	$(MAKE) -f CMakeFiles/stomp_cost.dir/build.make CMakeFiles/stomp_cost.dir/depend
 	$(MAKE) -f CMakeFiles/stomp_cost.dir/build.make CMakeFiles/stomp_cost.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=22,23 "Built target stomp_cost"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=24,25 "Built target stomp_cost"
 .PHONY : CMakeFiles/stomp_cost.dir/all
 
 # Include target in all.
@@ -1955,6 +1956,43 @@ clean: CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/chomp_obstalce_layer.dir
+
+# All Build rule for target.
+CMakeFiles/chomp_obstalce_layer.dir/all:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/depend
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=7,8 "Built target chomp_obstalce_layer"
+.PHONY : CMakeFiles/chomp_obstalce_layer.dir/all
+
+# Include target in all.
+all: CMakeFiles/chomp_obstalce_layer.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/chomp_obstalce_layer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/chomp_obstalce_layer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles 0
+.PHONY : CMakeFiles/chomp_obstalce_layer.dir/rule
+
+# Convenience name for target.
+chomp_obstalce_layer: CMakeFiles/chomp_obstalce_layer.dir/rule
+
+.PHONY : chomp_obstalce_layer
+
+# clean rule for target.
+CMakeFiles/chomp_obstalce_layer.dir/clean:
+	$(MAKE) -f CMakeFiles/chomp_obstalce_layer.dir/build.make CMakeFiles/chomp_obstalce_layer.dir/clean
+.PHONY : CMakeFiles/chomp_obstalce_layer.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/chomp_obstalce_layer.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/actionlib_generate_messages_cpp.dir
 
 # All Build rule for target.
@@ -2281,7 +2319,7 @@ clean: CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
 CMakeFiles/chomp_parameters.dir/all:
 	$(MAKE) -f CMakeFiles/chomp_parameters.dir/build.make CMakeFiles/chomp_parameters.dir/depend
 	$(MAKE) -f CMakeFiles/chomp_parameters.dir/build.make CMakeFiles/chomp_parameters.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=9,10 "Built target chomp_parameters"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=11,12 "Built target chomp_parameters"
 .PHONY : CMakeFiles/chomp_parameters.dir/all
 
 # Include target in all.
@@ -2932,7 +2970,7 @@ gtest/googlemock/preinstall: gtest/googlemock/gtest/preinstall
 gtest/googlemock/CMakeFiles/gmock_main.dir/all:
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=14,15,16,17 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=16,17,18,19 "Built target gmock_main"
 .PHONY : gtest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2964,7 +3002,7 @@ clean: gtest/googlemock/CMakeFiles/gmock_main.dir/clean
 gtest/googlemock/CMakeFiles/gmock.dir/all:
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=11,12,13 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=13,14,15 "Built target gmock"
 .PHONY : gtest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3015,7 +3053,7 @@ gtest/googlemock/gtest/preinstall:
 gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/all: gtest/googlemock/gtest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=20,21 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=22,23 "Built target gtest_main"
 .PHONY : gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3047,7 +3085,7 @@ clean: gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/clean
 gtest/googlemock/gtest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=18,19 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/build/CMakeFiles --progress-num=20,21 "Built target gtest"
 .PHONY : gtest/googlemock/gtest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.

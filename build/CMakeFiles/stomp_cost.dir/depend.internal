@@ -5,6 +5,7 @@ CMakeFiles/stomp_cost.dir/src/stomp_cost.cpp.o
  ../include/chomp_local_planner/chomp_car_trajectory.h
  ../include/chomp_local_planner/chomp_utils.h
  ../include/chomp_local_planner/stomp_cost.h
+ /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/logger.h
  /home/caiyufeng/turtlebot3_ws/src/navigation/chomp_local_planner/src/stomp_cost.cpp
  /opt/ros/melodic/include/geometry_msgs/Point.h
  /opt/ros/melodic/include/geometry_msgs/Pose.h
