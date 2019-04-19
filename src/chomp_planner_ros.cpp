@@ -102,7 +102,22 @@ bool CHOMPPlannerROS::isGoalReached()
 {
   ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS isGoalReached function");
 
-  return false;
+  if (! isInitialized()) {
+      ROS_ERROR("This planner has not been initialized, please call initialize() before using this planner");
+      return false;
+    }
+    if ( ! costmap_ros_->getRobotPose(current_pose_)) {
+      ROS_ERROR("Could not get robot pose");
+      return false;
+    }
+
+    if(latchedStopRotateController_.isGoalReached(&planner_util_, odom_helper_, current_pose_)) {
+      ROS_INFO("Goal reached");
+      return true;
+    } else {
+      return false;
+    }
+
 }
 
 bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
@@ -140,7 +155,8 @@ bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
   {
     ROS_DEBUG_NAMED("chomp_planner", "Position reached. Compute velocity commands to stop and rotate.");
     // publish an empty plan because we've reached our goal position
-    /*
+
+    
     std::vector<geometry_msgs::PoseStamped> local_plan;
     std::vector<geometry_msgs::PoseStamped> transformed_plan;
     publishGlobalPlan(transformed_plan);
@@ -149,8 +165,7 @@ bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     return latchedStopRotateController_.computeVelocityCommandsStopRotate(
         cmd_vel, limits.getAccLimits(), cp_->getSimPeriod(), &planner_util_, odom_helper_, current_pose_,
-        boost::bind(&CHOMPPlanner::checkTrajectory, cp_, _1, _2, _3));*/
-    return true;
+        boost::bind(&CHOMPPlanner::checkTrajectory, cp_, _1, _2, _3));
   }
   else
   {
@@ -187,16 +202,34 @@ bool CHOMPPlannerROS::chompComputeVelocityCommands(geometry_msgs::PoseStamped &g
   std::vector<Vector2d> drive_cmds;
   std::string baseFrameID = costmap_ros_->getBaseFrameID();
 
+  ros::Time last_time = ros::Time::now();
+
   std::vector<geometry_msgs::PoseStamped> local_plan =
-      cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmds, odom_helper_.getOdomYaw());
+      cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmds, &odom_helper_);
+
+  ros::Time current_time = ros::Time::now();
+
+  ROS_DEBUG_NAMED("chomp_planner", "choomp planner time used: %f", (current_time - last_time).toSec());
 
   publishLocalPlan(local_plan);
 
-  if (true)
+  /*for(int i = 0; i < 10; ++i)
+  {
+    geometry_msgs::Twist cmd_compute;
+    cmd_compute.linear.x = drive_cmds[i](0, 0);
+    cmd_compute.angular.z = drive_cmds[i](1, 0);
+    vel_pub_.publish(cmd_compute);
+    ros::Duration(0.1).sleep();
+  }*/
+
+ /* if (true)
   {
     ROS_INFO_ONCE("one loop control, point num: %d", static_cast<int>(drive_cmds.size()));
     ros::Duration(5.0).sleep();
-  }
+  }*/
+
+  cmd_vel.linear.x = drive_cmds[0](0, 0);
+  cmd_vel.angular.z = drive_cmds[0](1, 0);
 
   return true;
 }
@@ -265,5 +298,6 @@ void CHOMPPlannerROS::costmap_test()
     std::cout << std::endl;
   }
 }
+
 
 };  // namespace chomp_local_planner

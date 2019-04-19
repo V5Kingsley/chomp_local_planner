@@ -83,6 +83,8 @@ eigen3/Eigen/Core
 -
 eigen3/Eigen/Dense
 -
+base_local_planner/odometry_helper_ros.h
+-
 tf/transform_datatypes.h
 ../include/chomp_local_planner/tf/transform_datatypes.h
 

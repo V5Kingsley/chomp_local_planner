@@ -88,12 +88,10 @@ private:
   std::vector<double> robot_vertex_[num_collision_points];
 
   base_local_planner::LocalPlannerLimits limits_;
+
   double max_vel_x_;
-  double min_vel_x_;
   double max_vel_theta_;
-  double min_vel_theta_;
   double max_x_;
-  double max_y_;
   double max_theta_;
 
 
@@ -102,6 +100,8 @@ private:
   void handleVelLimits();
 
   void handleLimits();
+
+
 
 };
 

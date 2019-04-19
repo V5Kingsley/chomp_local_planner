@@ -1,6 +1,6 @@
 #include <chomp_local_planner/chomp_optimizer.h>
 
-#define LOGGER_DEBUG
+//#define LOGGER_DEBUG
 #include "logger.h"
 
 ChompOptimizer::ChompOptimizer(ChompTrajectory *trajectory, base_local_planner::LocalPlannerUtil *planner_util)
@@ -44,7 +44,7 @@ ChompOptimizer::ChompOptimizer(ChompTrajectory *trajectory, base_local_planner::
 	collision_point_potential_.resize(num_vars_all_);
 
 	obstacle_layer_ = boost::shared_ptr<chomp_obstacle_layer::ChompObstacleLayer>(
-			new chomp_obstacle_layer::ChompObstacleLayer(planner_util_->getCostmap(), 0.3));
+			new chomp_obstacle_layer::ChompObstacleLayer(planner_util_->getCostmap(), 0.2));
 	
   for(int i = 0; i < num_collision_points; ++i)
   {
@@ -76,7 +76,7 @@ bool ChompOptimizer::optimize()
 		double collisionCost = getCollisionCost();
 		double cost = smoothCost + collisionCost;
 
-		ROS_DEBUG_NAMED("chomp_optimizer", "cost: %f", cost);
+		ROS_DEBUG_NAMED("chomp_optimizer", "cost: %f, smoothCost: %f, collisionCost: %f", cost, smoothCost, collisionCost);
 		if (cost < best_group_trajectory_cost)
 		{
 			best_group_trajectory_ = group_trajectory_.getTrajectory();
@@ -125,7 +125,8 @@ bool ChompOptimizer::optimize()
 		//MATRIX_DEBUG("group_trajectory", group_trajectory_.getTrajectory());
 	}
 
-	if(is_collision_free_)
+	//if(is_collision_free_)
+	if(true)
 	{
 		group_trajectory_.getTrajectory() = best_group_trajectory_;
 		updateFullTrajectory();
@@ -253,6 +254,43 @@ void ChompOptimizer::calculateCollisionIncrements()
 	jacobian = Eigen::MatrixXd::Zero(NUM_POSITION_PLAN, NUM_POSITION_PLAN);
 	collision_increments_.setZero(num_vars_free_, NUM_POSITION_PLAN);
 
+/*
+	if(iteration_ >= ChompParameters::getChangePotential())
+	{
+		if(iteration_ == ChompParameters::getChangePotential())
+		{
+			group_trajectory_.getTrajectory() = original_group_trajectory_;
+		}
+		int number_count = 0;
+		//要优化的点必须是碰撞的，如果随机的点无碰撞，继续随机采样
+		do
+		{
+			startPoint = (int)(((double)random() / (double)RAND_MAX) *
+														 (free_vars_end_ - free_vars_start_) +
+												 free_vars_start_);
+			if (startPoint < free_vars_start_)
+				startPoint = free_vars_start_;
+			if (startPoint > free_vars_end_)
+				startPoint = free_vars_end_;
+			number_count++;
+		} while (!state_is_in_collision_[startPoint] && number_count < 5);
+		if (number_count == 5)
+		{
+			for (int i = free_vars_start_; i <= free_vars_end_; i++)
+			{
+				if (state_is_in_collision_[i])
+				{
+					startPoint = i;
+					break;
+				}
+			}
+		}
+		startPoint = (startPoint - 2) < free_vars_start_ ? free_vars_start_ : (startPoint - 2);
+		endPoint = (endPoint + 2) > free_vars_end_ ? free_vars_end_ : (endPoint + 2);
+		
+	}
+*/
+
 	for(int i = startPoint; i <= endPoint; ++i)
 	{
 		potential = collision_point_potential_[i];
@@ -291,19 +329,14 @@ void ChompOptimizer::getMotionLimits()
 	max_vel_theta_ = limits_.max_vel_theta;
 	min_vel_theta_ = limits_.min_vel_theta;*/
 
-	max_vel_x_ = 0.22;
-	max_vel_theta_ = 1.57;
-
+	max_vel_x_ = ChompParameters::getMaxVelX();
+	max_vel_theta_ = ChompParameters::getMaxVelTheta();
 	double discretization = full_trajectory_->getDiscretization();
-	max_x_ = max_vel_x_ * discretization;
 	max_theta_ = max_vel_theta_ * discretization;
-	max_y_ = max_x_ * sin(max_theta_);
 
-
-	ROS_DEBUG_NAMED("chomp_optimizer", "discretization: %f, max_x: %f, max_y: %f, max_theta: %f", discretization, max_x_, max_y_, max_theta_);
 	
 }
-
+/*
 void ChompOptimizer::handleVelLimits()
 {
 	std::vector<double> position_limit{max_x_, max_y_, max_theta_};
@@ -355,12 +388,12 @@ void ChompOptimizer::handleVelLimits()
 				break;
 		} while (violation);
 	}
-}
+}*/
 
 
 void ChompOptimizer::handleLimits()
 {
-	for (int i = free_vars_start_ + 1; i <= free_vars_end_; i++)
+	/*for (int i = free_vars_start_ + 1; i <= free_vars_end_; i++)
 	{
 		if (group_trajectory_(i, 2) - group_trajectory_(i - 1, 2) > max_theta_)
 		{
@@ -376,10 +409,15 @@ void ChompOptimizer::handleLimits()
 		double delta_x = group_trajectory_(i, 0) - group_trajectory_(i - 1, 0);
 		double delta_y = group_trajectory_(i, 1) - group_trajectory_(i - 1, 1);
 		double vel = sqrt((delta_x * delta_x + delta_y * delta_y) / (discretization * discretization));
+		//if(vel > 3.0 * max_vel_x_)
+		//{
+		//	ROS_INFO("vel: %f, max_vel_x: %f", vel, max_vel_x_);
+		//	vel = max_vel_x_;
+	//	}
 		double vel_x = vel * cos(group_trajectory_(i, 2));
 		double vel_y = vel * sin(group_trajectory_(i, 2));
-		double max_x = vel_x * discretization;
-		double max_y = vel_y * discretization;
+		double max_x = fabs(vel_x * discretization);
+		double max_y = fabs(vel_y * discretization);
 
 		if(group_trajectory_(i, 0) - group_trajectory_(i - 1, 0) > max_x)
 		{
@@ -390,13 +428,22 @@ void ChompOptimizer::handleLimits()
 			group_trajectory_(i, 0) = group_trajectory_(i - 1, 0) - max_x;
 		}
 
-		if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) > max_x)
+		if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) > max_y)
 		{
-			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) + max_x;
+			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) + max_y;
 		}
-		else if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) < -max_x)
+		else if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) < -max_y)
 		{
-			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) - max_x;
+			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) - max_y;
+		}
+	}*/
+
+	for (int i = 0; i < NUM_POSITION_PLAN; ++i)
+	{
+		for (int j = free_vars_start_ + 1; j < free_vars_end_; ++j)
+		{
+			group_trajectory_(j, i) = (group_trajectory_(j - 1, i) + group_trajectory_(j + 1, i)) / 2.0;
 		}
 	}
 }
+

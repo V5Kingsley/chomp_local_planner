@@ -253,6 +253,23 @@ class DEFAULT
         if("yaw_goal_tolerance"==(*_i)->name){yaw_goal_tolerance = boost::any_cast<double>(val);}
         if("trans_stopped_vel"==(*_i)->name){trans_stopped_vel = boost::any_cast<double>(val);}
         if("theta_stopped_vel"==(*_i)->name){theta_stopped_vel = boost::any_cast<double>(val);}
+        if("sim_time"==(*_i)->name){sim_time = boost::any_cast<double>(val);}
+        if("sim_granularity"==(*_i)->name){sim_granularity = boost::any_cast<double>(val);}
+        if("angular_sim_granularity"==(*_i)->name){angular_sim_granularity = boost::any_cast<double>(val);}
+        if("path_distance_bias"==(*_i)->name){path_distance_bias = boost::any_cast<double>(val);}
+        if("goal_distance_bias"==(*_i)->name){goal_distance_bias = boost::any_cast<double>(val);}
+        if("occdist_scale"==(*_i)->name){occdist_scale = boost::any_cast<double>(val);}
+        if("twirling_scale"==(*_i)->name){twirling_scale = boost::any_cast<double>(val);}
+        if("stop_time_buffer"==(*_i)->name){stop_time_buffer = boost::any_cast<double>(val);}
+        if("oscillation_reset_dist"==(*_i)->name){oscillation_reset_dist = boost::any_cast<double>(val);}
+        if("oscillation_reset_angle"==(*_i)->name){oscillation_reset_angle = boost::any_cast<double>(val);}
+        if("forward_point_distance"==(*_i)->name){forward_point_distance = boost::any_cast<double>(val);}
+        if("scaling_speed"==(*_i)->name){scaling_speed = boost::any_cast<double>(val);}
+        if("max_scaling_factor"==(*_i)->name){max_scaling_factor = boost::any_cast<double>(val);}
+        if("vx_samples"==(*_i)->name){vx_samples = boost::any_cast<int>(val);}
+        if("vy_samples"==(*_i)->name){vy_samples = boost::any_cast<int>(val);}
+        if("vth_samples"==(*_i)->name){vth_samples = boost::any_cast<int>(val);}
+        if("use_dwa"==(*_i)->name){use_dwa = boost::any_cast<bool>(val);}
         if("restore_defaults"==(*_i)->name){restore_defaults = boost::any_cast<bool>(val);}
       }
     }
@@ -274,6 +291,23 @@ double xy_goal_tolerance;
 double yaw_goal_tolerance;
 double trans_stopped_vel;
 double theta_stopped_vel;
+double sim_time;
+double sim_granularity;
+double angular_sim_granularity;
+double path_distance_bias;
+double goal_distance_bias;
+double occdist_scale;
+double twirling_scale;
+double stop_time_buffer;
+double oscillation_reset_dist;
+double oscillation_reset_angle;
+double forward_point_distance;
+double scaling_speed;
+double max_scaling_factor;
+int vx_samples;
+int vy_samples;
+int vth_samples;
+bool use_dwa;
 bool restore_defaults;
 
     bool state;
@@ -318,6 +352,40 @@ bool restore_defaults;
       double trans_stopped_vel;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double theta_stopped_vel;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double sim_time;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double sim_granularity;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double angular_sim_granularity;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double path_distance_bias;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double goal_distance_bias;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double occdist_scale;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double twirling_scale;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double stop_time_buffer;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double oscillation_reset_dist;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double oscillation_reset_angle;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double forward_point_distance;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double scaling_speed;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      double max_scaling_factor;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      int vx_samples;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      int vy_samples;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      int vth_samples;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool use_dwa;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool restore_defaults;
 //#line 228 "/opt/ros/melodic/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
@@ -628,6 +696,176 @@ CHOMPPlannerConfig::GroupDescription<CHOMPPlannerConfig::DEFAULT, CHOMPPlannerCo
       Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("theta_stopped_vel", "double", 0, "Below what maximum rotation velocity we consider the robot to be stopped in rotation", "", &CHOMPPlannerConfig::theta_stopped_vel)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("theta_stopped_vel", "double", 0, "Below what maximum rotation velocity we consider the robot to be stopped in rotation", "", &CHOMPPlannerConfig::theta_stopped_vel)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.sim_time = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.sim_time = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.sim_time = 1.7;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("sim_time", "double", 0, "The amount of time to roll trajectories out for in seconds", "", &CHOMPPlannerConfig::sim_time)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("sim_time", "double", 0, "The amount of time to roll trajectories out for in seconds", "", &CHOMPPlannerConfig::sim_time)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.sim_granularity = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.sim_granularity = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.sim_granularity = 0.025;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("sim_granularity", "double", 0, "The granularity with which to check for collisions along each trajectory in meters", "", &CHOMPPlannerConfig::sim_granularity)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("sim_granularity", "double", 0, "The granularity with which to check for collisions along each trajectory in meters", "", &CHOMPPlannerConfig::sim_granularity)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.angular_sim_granularity = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.angular_sim_granularity = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.angular_sim_granularity = 0.1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("angular_sim_granularity", "double", 0, "The granularity with which to check for collisions for rotations in radians", "", &CHOMPPlannerConfig::angular_sim_granularity)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("angular_sim_granularity", "double", 0, "The granularity with which to check for collisions for rotations in radians", "", &CHOMPPlannerConfig::angular_sim_granularity)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.path_distance_bias = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.path_distance_bias = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.path_distance_bias = 0.6;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("path_distance_bias", "double", 0, "The weight for the path distance part of the cost function", "", &CHOMPPlannerConfig::path_distance_bias)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("path_distance_bias", "double", 0, "The weight for the path distance part of the cost function", "", &CHOMPPlannerConfig::path_distance_bias)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.goal_distance_bias = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.goal_distance_bias = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.goal_distance_bias = 0.8;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("goal_distance_bias", "double", 0, "The weight for the goal distance part of the cost function", "", &CHOMPPlannerConfig::goal_distance_bias)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("goal_distance_bias", "double", 0, "The weight for the goal distance part of the cost function", "", &CHOMPPlannerConfig::goal_distance_bias)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.occdist_scale = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.occdist_scale = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.occdist_scale = 0.01;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("occdist_scale", "double", 0, "The weight for the obstacle distance part of the cost function", "", &CHOMPPlannerConfig::occdist_scale)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("occdist_scale", "double", 0, "The weight for the obstacle distance part of the cost function", "", &CHOMPPlannerConfig::occdist_scale)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.twirling_scale = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.twirling_scale = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.twirling_scale = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("twirling_scale", "double", 0, "The weight for penalizing any changes in robot heading", "", &CHOMPPlannerConfig::twirling_scale)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("twirling_scale", "double", 0, "The weight for penalizing any changes in robot heading", "", &CHOMPPlannerConfig::twirling_scale)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.stop_time_buffer = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.stop_time_buffer = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.stop_time_buffer = 0.2;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("stop_time_buffer", "double", 0, "The amount of time that the robot must stop before a collision in order for a trajectory to be considered valid in seconds", "", &CHOMPPlannerConfig::stop_time_buffer)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("stop_time_buffer", "double", 0, "The amount of time that the robot must stop before a collision in order for a trajectory to be considered valid in seconds", "", &CHOMPPlannerConfig::stop_time_buffer)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.oscillation_reset_dist = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.oscillation_reset_dist = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.oscillation_reset_dist = 0.05;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("oscillation_reset_dist", "double", 0, "The distance the robot must travel before oscillation flags are reset, in meters", "", &CHOMPPlannerConfig::oscillation_reset_dist)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("oscillation_reset_dist", "double", 0, "The distance the robot must travel before oscillation flags are reset, in meters", "", &CHOMPPlannerConfig::oscillation_reset_dist)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.oscillation_reset_angle = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.oscillation_reset_angle = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.oscillation_reset_angle = 0.2;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("oscillation_reset_angle", "double", 0, "The angle the robot must turn before oscillation flags are reset, in radians", "", &CHOMPPlannerConfig::oscillation_reset_angle)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("oscillation_reset_angle", "double", 0, "The angle the robot must turn before oscillation flags are reset, in radians", "", &CHOMPPlannerConfig::oscillation_reset_angle)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.forward_point_distance = -std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.forward_point_distance = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.forward_point_distance = 0.325;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("forward_point_distance", "double", 0, "The distance from the center point of the robot to place an additional scoring point, in meters", "", &CHOMPPlannerConfig::forward_point_distance)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("forward_point_distance", "double", 0, "The distance from the center point of the robot to place an additional scoring point, in meters", "", &CHOMPPlannerConfig::forward_point_distance)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.scaling_speed = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.scaling_speed = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.scaling_speed = 0.25;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("scaling_speed", "double", 0, "The absolute value of the velocity at which to start scaling the robot's footprint, in m/s", "", &CHOMPPlannerConfig::scaling_speed)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("scaling_speed", "double", 0, "The absolute value of the velocity at which to start scaling the robot's footprint, in m/s", "", &CHOMPPlannerConfig::scaling_speed)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.max_scaling_factor = 0.0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.max_scaling_factor = std::numeric_limits<double>::infinity();
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.max_scaling_factor = 0.2;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("max_scaling_factor", "double", 0, "The maximum factor to scale the robot's footprint by", "", &CHOMPPlannerConfig::max_scaling_factor)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<double>("max_scaling_factor", "double", 0, "The maximum factor to scale the robot's footprint by", "", &CHOMPPlannerConfig::max_scaling_factor)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.vx_samples = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.vx_samples = 2147483647;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.vx_samples = 3;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vx_samples", "int", 0, "The number of samples to use when exploring the x velocity space", "", &CHOMPPlannerConfig::vx_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vx_samples", "int", 0, "The number of samples to use when exploring the x velocity space", "", &CHOMPPlannerConfig::vx_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.vy_samples = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.vy_samples = 2147483647;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.vy_samples = 10;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vy_samples", "int", 0, "The number of samples to use when exploring the y velocity space", "", &CHOMPPlannerConfig::vy_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vy_samples", "int", 0, "The number of samples to use when exploring the y velocity space", "", &CHOMPPlannerConfig::vy_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.vth_samples = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.vth_samples = 2147483647;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.vth_samples = 20;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vth_samples", "int", 0, "The number of samples to use when exploring the theta velocity space", "", &CHOMPPlannerConfig::vth_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<int>("vth_samples", "int", 0, "The number of samples to use when exploring the theta velocity space", "", &CHOMPPlannerConfig::vth_samples)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.use_dwa = 0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.use_dwa = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.use_dwa = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<bool>("use_dwa", "bool", 0, "Use dynamic window approach to constrain sampling velocities to small window.", "", &CHOMPPlannerConfig::use_dwa)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(CHOMPPlannerConfig::AbstractParamDescriptionConstPtr(new CHOMPPlannerConfig::ParamDescription<bool>("use_dwa", "bool", 0, "Use dynamic window approach to constrain sampling velocities to small window.", "", &CHOMPPlannerConfig::use_dwa)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.restore_defaults = 0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

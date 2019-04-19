@@ -88,6 +88,8 @@ private:
   ros::NodeHandle nh;
 
   void costmap_test();
+
+
 };
 };  // namespace chomp_local_planner
 

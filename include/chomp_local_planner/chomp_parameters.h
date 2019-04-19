@@ -36,6 +36,10 @@ public:
   static double getObstacleCostWeight() { return chomp_parameters->obstacle_cost_weight_; }
   static int getMaxIterationsAfterCollision() { return chomp_parameters->max_iterations_after_collision_free_; }
   static double getPositionUpdateLimit() { return chomp_parameters->position_update_limit_; }
+  static double getChangePotential() { return chomp_parameters->change_potential_; }
+  static double getMaxVelX() { return chomp_parameters->max_vel_x_; }
+  static double getMaxVelTheta() { return chomp_parameters->max_vel_theta_; }
+  static int getSimPoints() { return chomp_parameters->sim_points_; }
 private:
   ChompParameters();
   static ChompParameters *chomp_parameters;
@@ -61,6 +65,13 @@ public:
   int max_iterations_after_collision_free_;
 
   double position_update_limit_;
+
+  int change_potential_;
+
+  double max_vel_x_;
+  double max_vel_theta_;
+
+  int sim_points_;
 
 };
 

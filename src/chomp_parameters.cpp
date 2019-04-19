@@ -28,6 +28,10 @@ ChompParameters::ChompParameters()
   nh.param<double>("obstacle_cost_weight", obstacle_cost_weight_, 10.0);
   nh.param<int>("max_iterations_after_collision_free", max_iterations_after_collision_free_, 1);
   nh.param<double>("position_update_limit", position_update_limit_, 0.15);
+  nh.param<int>("change_potential", change_potential_, 30);
+  nh.param<double>("max_vel_x", max_vel_x_, 0.22);
+  nh.param<double>("max_vel_theta", max_vel_theta_, 1.57);
+  nh.param<int>("sim_points", sim_points_, 10);
 
 }
 

@@ -241,6 +241,10 @@ void ChompObstacleLayer::getPotential(std::vector<double> &state, double &potent
   distance = min_distance;
   potential = 0; //重置为0
 
+  //double wx = robot_vertex_[0][0] * cos(state[2]) - robot_vertex_[0][1] * sin(state[2]) + state[0];
+  //double wy = robot_vertex_[0][0] * sin(state[2]) + robot_vertex_[0][1] * cos(state[2]) + state[1];
+
+
   double wx = state[0];
   double wy = state[1];
   double obs_x, obs_y;
@@ -341,7 +345,6 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
   double min_distance = 1000;
   distance = min_distance;
   potential = 0;
-
   double robot_x = state[0];
   double robot_y = state[1];
   double obs_x, obs_y;
@@ -356,7 +359,6 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
       //ROS_DEBUG_NAMED("chomp_obstacle_layer", "This trajectory point is clear");
       continue;
     }
-
     //当顶点在障碍物内时，将势能梯度设为0（由于障碍物内的距离都设为了0,没有设为负，无法计算梯度）
     if(distance == 0)
     {
@@ -365,13 +367,9 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
       //ROS_DEBUG_NAMED("chomp_obstacle_layer", "This trajectory point is in obstacle, potential: %f", potential);
       continue;
     }
-
     //以下为计算势能和势能梯度（在障碍物附近时）
-
     potential += calculatePotential(distance);
-
     //ROS_DEBUG_NAMED("chomp_obstacle_layer", "vertex: (%f, %f), obstacle: (%f, %f), distance: %f, potential: %f", wx, wy, obs_x, obs_y, min_distance, potential);
-
     (*(potential_gradient + i))[index](0, 0) =
         (robot_vertex_[i][0] * cos(state[2]) -
          robot_vertex_[i][1] * sin(state[2]) + state[0] - obs_x) /
@@ -381,12 +379,10 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
         (robot_vertex_[i][0] * sin(state[2]) +
          robot_vertex_[i][1] * cos(state[2]) + state[1] - obs_y) /
         distance;
-
     double temp1 = (robot_vertex_[i][0] * cos(state[2]) -
                     robot_vertex_[i][1] * sin(state[2]) + state[0] - obs_x) *
                    (-robot_vertex_[i][0] * sin(state[2]) - 
                    robot_vertex_[i][1] * cos(state[2]));
-
     double temp2 = (robot_vertex_[i][0] * sin(state[2]) +
                     robot_vertex_[i][1] * cos(state[2]) + state[1] - obs_y) *
                    (robot_vertex_[i][0] * cos(state[2]) - 
@@ -394,7 +390,6 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
     
     (*(potential_gradient + i))[index](2, 0) = (temp1 + temp2) / distance;
   }
-
   //计算机体中心周围的四个点是否碰到障碍物
   double vertex_distance;
   getObstacleDist(robot_x + 0.05, robot_y, obs_x, obs_y, vertex_distance);
@@ -414,20 +409,16 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
 
 /*void ChompObstacleLayer::getPotential(std::vector<double> &state, double &potential, std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d>> *potential_gradient, int index, double &distance)
 {
-
   double min_distance = 1000;
   distance = min_distance;
   potential = 0; //重置为0
-
   //ROS_DEBUG_NAMED("chomp_obstacle_layer", "(%f, %f), (%f, %f), (%f, %f), (%f, %f)", robot_vertex_[0][0], robot_vertex_[0][1], robot_vertex_[1][0], robot_vertex_[1][1], robot_vertex_[2][0], robot_vertex_[2][1], robot_vertex_[3][0], robot_vertex_[3][1]);
-
   //分别计算机器人的四个顶点
   for(int i = 0; i < num_collision_points; i++)
   {
     //顶点的世界坐标
    // double wx = robot_vertex_[i][0] * cos(state[2]) - robot_vertex_[i][1] * sin(state[2]) + state[0];
     //double wy = robot_vertex_[i][0] * sin(state[2]) + robot_vertex_[i][1] * cos(state[2]) + state[1];
-
     double wx = state[0];
     double wy = state[1];
     //if(i == 0)
@@ -436,15 +427,11 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
     //  wy = state[1];
     //}
    // ROS_DEBUG_NAMED("chomp_obstacle_layer", "theta: %f", state[2]);
-
     double obs_x, obs_y;
-
     getObstacleDist(wx, wy, obs_x, obs_y, min_distance);  //获取障碍物信息
     //ROS_DEBUG_NAMED("chomp_obstacle_layer", "vertex: (%f, %f), obstacle: (%f, %f), distance: %f", wx, wy, obs_x, obs_y, min_distance);
-
     if(min_distance != -1)
       distance = min_distance < distance ? min_distance : distance;
-
     //clear时，势能梯度为0
     if(min_distance == -1)
     {
@@ -452,7 +439,6 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
       //ROS_DEBUG_NAMED("chomp_obstacle_layer", "This trajectory point is clear");
       continue;
     }
-
     //当顶点在障碍物内时，将势能梯度设为0（由于障碍物内的距离都设为了0,没有设为负，无法计算梯度）
     if(min_distance == 0)
     {
@@ -461,13 +447,9 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
       //ROS_DEBUG_NAMED("chomp_obstacle_layer", "This trajectory point is in obstacle, potential: %f", potential);
       continue;
     }
-
 //以下为计算势能和势能梯度（在障碍物附近时）
-
     potential = calculatePotential(min_distance);
-
     //ROS_DEBUG_NAMED("chomp_obstacle_layer", "vertex: (%f, %f), obstacle: (%f, %f), distance: %f, potential: %f", wx, wy, obs_x, obs_y, min_distance, potential);
-
     (*(potential_gradient + i))[index](0, 0) =
         (robot_vertex_[i][0] * cos(state[2]) -
          robot_vertex_[i][1] * sin(state[2]) + state[0] - obs_x) /
@@ -477,19 +459,16 @@ inline double ChompObstacleLayer::calculatePotential(double distance)
         (robot_vertex_[i][0] * sin(state[2]) +
          robot_vertex_[i][1] * cos(state[2]) + state[1] - obs_y) /
         min_distance;
-
     double temp1 = (robot_vertex_[i][0] * cos(state[2]) -
                     robot_vertex_[i][1] * sin(state[2]) + state[0] - obs_x) *
                    (-robot_vertex_[i][0] * sin(state[2]) - 
                    robot_vertex_[i][1] * cos(state[2]));
-
     double temp2 = (robot_vertex_[i][0] * sin(state[2]) +
                     robot_vertex_[i][1] * cos(state[2]) + state[1] - obs_y) *
                    (robot_vertex_[i][0] * cos(state[2]) - 
                    robot_vertex_[i][1] * sin(state[2]));
     
     (*(potential_gradient + i))[index](2, 0) = (temp1 + temp2) / min_distance;
-
    // ROS_DEBUG_NAMED("chomp_obstacle_layer","calculate gradient over");
   }
   double vertex_distance, obs_x, obs_y;

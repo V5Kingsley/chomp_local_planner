@@ -23,8 +23,14 @@
 
 namespace chomp_local_planner
 {
-CHOMPPlanner::CHOMPPlanner(std::string name, base_local_planner::LocalPlannerUtil* planner_util)
-  : planner_util_(planner_util)
+CHOMPPlanner::CHOMPPlanner(std::string name, base_local_planner::LocalPlannerUtil *planner_util)
+    : planner_util_(planner_util),
+      obstacle_costs_(planner_util->getCostmap()),
+      path_costs_(planner_util->getCostmap()),
+      goal_costs_(planner_util->getCostmap(), 0.0, 0.0, true),
+      goal_front_costs_(planner_util->getCostmap(), 0.0, 0.0, true),
+      alignment_costs_(planner_util->getCostmap())
+
 {
   ros::NodeHandle private_nh("~/" + name);
 
@@ -50,6 +56,30 @@ CHOMPPlanner::CHOMPPlanner(std::string name, base_local_planner::LocalPlannerUti
   ROS_INFO("Sim period is set to %.2f", sim_period_);
 
   preGlobalPath_pub = nh.advertise<nav_msgs::Path>("trajectory", 1, true);
+
+  //dwa 控制停止部分
+  std::vector<base_local_planner::TrajectoryCostFunction *> critics;
+  oscillation_costs_.resetOscillationFlags();
+  bool sum_scores;
+  private_nh.param("sum_scores", sum_scores, false);
+  obstacle_costs_.setSumScores(sum_scores);
+  goal_front_costs_.setStopOnFailure( false );
+  alignment_costs_.setStopOnFailure( false );
+
+  critics.push_back(&oscillation_costs_); // discards oscillating motions (assisgns cost -1)
+  critics.push_back(&obstacle_costs_);    // discards trajectories that move into obstacles
+  critics.push_back(&goal_front_costs_);  // prefers trajectories that make the nose go towards (local) nose goal
+  critics.push_back(&alignment_costs_);   // prefers trajectories that keep the robot nose on nose path
+  critics.push_back(&path_costs_);        // prefers trajectories on global path
+  critics.push_back(&goal_costs_);        // prefers trajectories that go towards (local) goal, based on wave propagation
+  critics.push_back(&twirling_costs_);    // optionally prefer trajectories that don't spin
+  // trajectory generators
+  std::vector<base_local_planner::TrajectorySampleGenerator *> generator_list;
+  generator_list.push_back(&generator_);
+
+  scored_sampling_planner_ = base_local_planner::SimpleScoredSamplingPlanner(generator_list, critics);
+
+  private_nh.param("cheat_factor", cheat_factor_, 1.0);
 }
 
 bool CHOMPPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan)
@@ -67,7 +97,45 @@ void CHOMPPlanner::updatePlanAndLocalCosts(const geometry_msgs::PoseStamped& glo
     global_plan_[i] = new_plan[i]; 
   }
   
-  footprint_ = footprint_spec;
+   obstacle_costs_.setFootprint(footprint_spec);
+
+    // costs for going away from path
+    path_costs_.setTargetPoses(global_plan_);
+
+    // costs for not going towards the local goal as much as possible
+    goal_costs_.setTargetPoses(global_plan_);
+
+    // alignment costs
+    geometry_msgs::PoseStamped goal_pose = global_plan_.back();
+
+    Eigen::Vector3f pos(global_pose.pose.position.x, global_pose.pose.position.y, tf2::getYaw(global_pose.pose.orientation));
+    double sq_dist =
+        (pos[0] - goal_pose.pose.position.x) * (pos[0] - goal_pose.pose.position.x) +
+        (pos[1] - goal_pose.pose.position.y) * (pos[1] - goal_pose.pose.position.y);
+
+    // we want the robot nose to be drawn to its final position
+    // (before robot turns towards goal orientation), not the end of the
+    // path for the robot center. Choosing the final position after
+    // turning towards goal orientation causes instability when the
+    // robot needs to make a 180 degree turn at the end
+    std::vector<geometry_msgs::PoseStamped> front_global_plan = global_plan_;
+    double angle_to_goal = atan2(goal_pose.pose.position.y - pos[1], goal_pose.pose.position.x - pos[0]);
+    front_global_plan.back().pose.position.x = front_global_plan.back().pose.position.x +
+      forward_point_distance_ * cos(angle_to_goal);
+    front_global_plan.back().pose.position.y = front_global_plan.back().pose.position.y + forward_point_distance_ *
+      sin(angle_to_goal);
+
+    goal_front_costs_.setTargetPoses(front_global_plan);
+    
+    // keeping the nose on the path
+    if (sq_dist > forward_point_distance_ * forward_point_distance_ * cheat_factor_) {
+      alignment_costs_.setScale(pdist_scale_);
+      // costs for robot being aligned with path (nose on path, not ju
+      alignment_costs_.setTargetPoses(global_plan_);
+    } else {
+      // once we are close to goal, trying to keep the nose close to anything destabilizes behavior.
+      alignment_costs_.setScale(0.0);
+    }
 }
 
 
@@ -75,44 +143,107 @@ void CHOMPPlanner::reconfigure(CHOMPPlannerConfig &config)
 {
   boost::mutex::scoped_lock l(configuration_mutex_);
 
+  generator_.setParameters(
+      config.sim_time,
+      config.sim_granularity,
+      config.angular_sim_granularity,
+      config.use_dwa,
+      sim_period_);
+
+  double resolution = planner_util_->getCostmap()->getResolution();
+  pdist_scale_ = resolution * config.path_distance_bias;
+  // pdistscale used for both path and alignment, set  forward_point_distance to zero to discard alignment
+  path_costs_.setScale(pdist_scale_);
+  alignment_costs_.setScale(pdist_scale_);
+
+  gdist_scale_ = resolution * config.goal_distance_bias;
+  goal_costs_.setScale(gdist_scale_);
+  goal_front_costs_.setScale(gdist_scale_);
+
+  occdist_scale_ = config.occdist_scale;
+  obstacle_costs_.setScale(occdist_scale_);
+
+  stop_time_buffer_ = config.stop_time_buffer;
+  oscillation_costs_.setOscillationResetDist(config.oscillation_reset_dist, config.oscillation_reset_angle);
+  forward_point_distance_ = config.forward_point_distance;
+  goal_front_costs_.setXShift(forward_point_distance_);
+  alignment_costs_.setXShift(forward_point_distance_);
+
+  // obstacle costs can vary due to scaling footprint feature
+  obstacle_costs_.setParams(config.max_vel_trans, config.max_scaling_factor, config.scaling_speed);
+
+  twirling_costs_.setScale(config.twirling_scale);
+
+  int vx_samp, vy_samp, vth_samp;
+  vx_samp = config.vx_samples;
+  vy_samp = config.vy_samples;
+  vth_samp = config.vth_samples;
+
+  if (vx_samp <= 0)
+  {
+    ROS_WARN("You've specified that you don't want any samples in the x dimension. We'll at least assume that you want to sample one value... so we're going to set vx_samples to 1 instead");
+    vx_samp = 1;
+    config.vx_samples = vx_samp;
+  }
+
+  if (vy_samp <= 0)
+  {
+    ROS_WARN("You've specified that you don't want any samples in the y dimension. We'll at least assume that you want to sample one value... so we're going to set vy_samples to 1 instead");
+    vy_samp = 1;
+    config.vy_samples = vy_samp;
+  }
+
+  if (vth_samp <= 0)
+  {
+    ROS_WARN("You've specified that you don't want any samples in the th dimension. We'll at least assume that you want to sample one value... so we're going to set vth_samples to 1 instead");
+    vth_samp = 1;
+    config.vth_samples = vth_samp;
+  }
+
+  vsamples_[0] = vx_samp;
+  vsamples_[1] = vy_samp;
+  vsamples_[2] = vth_samp;
+
   ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlanner reconfigure");
 }
-/*
-bool CHOMPPlanner::checkTrajectory(
-      Eigen::Vector3f pos,
-      Eigen::Vector3f vel,
-      Eigen::Vector3f vel_samples){
-    oscillation_costs_.resetOscillationFlags();
-    base_local_planner::Trajectory traj;
-    geometry_msgs::PoseStamped goal_pose = global_plan_.back();
-    Eigen::Vector3f goal(goal_pose.pose.position.x, goal_pose.pose.position.y, tf2::getYaw(goal_pose.pose.orientation));
-    base_local_planner::LocalPlannerLimits limits = planner_util_->getCurrentLimits();
-    generator_.initialise(pos,
-        vel,
-        goal,
-        &limits,
-        vsamples_);
-    generator_.generateTrajectory(pos, vel, vel_samples, traj);
-    double cost = scored_sampling_planner_.scoreTrajectory(traj, -1);
-    //if the trajectory is a legal one... the check passes
-    if(cost >= 0) {
-      return true;
-    }
-    ROS_WARN("Invalid Trajectory %f, %f, %f, cost: %f", vel_samples[0], vel_samples[1], vel_samples[2], cost);
 
-    //otherwise the check fails
-    return false;
-  }*/
+bool CHOMPPlanner::checkTrajectory(
+    Eigen::Vector3f pos,
+    Eigen::Vector3f vel,
+    Eigen::Vector3f vel_samples)
+{
+  oscillation_costs_.resetOscillationFlags();
+  base_local_planner::Trajectory traj;
+  geometry_msgs::PoseStamped goal_pose = global_plan_.back();
+  Eigen::Vector3f goal(goal_pose.pose.position.x, goal_pose.pose.position.y, tf2::getYaw(goal_pose.pose.orientation));
+  base_local_planner::LocalPlannerLimits limits = planner_util_->getCurrentLimits();
+  generator_.initialise(pos,
+                        vel,
+                        goal,
+                        &limits,
+                        vsamples_);
+  generator_.generateTrajectory(pos, vel, vel_samples, traj);
+  double cost = scored_sampling_planner_.scoreTrajectory(traj, -1);
+  //if the trajectory is a legal one... the check passes
+  if (cost >= 0)
+  {
+    return true;
+  }
+  ROS_WARN("Invalid Trajectory %f, %f, %f, cost: %f", vel_samples[0], vel_samples[1], vel_samples[2], cost);
+
+  //otherwise the check fails
+  return false;
+  }
 
 std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
           const geometry_msgs::PoseStamped& global_pose, 
           std::string baseFrameID, 
           const geometry_msgs::PoseStamped& global_vel, 
-          std::vector<Vector2d>& drive_velocities, double yaw_initial)
+          std::vector<Vector2d>& drive_velocities, base_local_planner::OdometryHelperRos *odom_helper)
 {
   ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlanner findBestPath");
   
-  chomp_car_trajectory::ChompTrajectory trajectory(global_plan_, yaw_initial, sim_period_);
+  chomp_car_trajectory::ChompTrajectory trajectory(global_plan_, odom_helper->getOdomYaw(), sim_period_);
 
   ChompOptimizer chompOptimizer(&trajectory, planner_util_);
   chompOptimizer.optimize();
@@ -135,6 +266,8 @@ std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
   //obstacle_layer.viewCostMap();
   //obstacle_layer.viewObstacleCells();
 
+  getCmdVel(trajectory.getTrajectory(), odom_helper, drive_velocities);
+
   Eigen::MatrixXd local_trajectory = trajectory.getTrajectory();
   double wx,wy,distance;
   for(int i = 0; i < trajectory.getNumPoints(); ++i)
@@ -144,6 +277,80 @@ std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
   }
   return global_plan_;
 }
+
+void CHOMPPlanner::getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, std::vector<Vector2d>& drive_vel)
+{
+  ROS_DEBUG_NAMED("chomp_planner", "chomp planner get cmd_vel");
+
+  drive_vel.resize(1);
+  geometry_msgs::PoseStamped robot_vel;
+  odom_helper->getRobotVel(robot_vel);
+  double init_vel_x = robot_vel.pose.position.x;
+  double init_vel_yaw = tf2::getYaw(robot_vel.pose.orientation);
+
+  if(position_trajectory.rows() <= 5)
+  {
+    drive_vel[0](0, 0) = init_vel_x;
+    drive_vel[0](1, 0) = init_vel_yaw;
+    return;
+  }
+
+
+  int sim_points = ChompParameters::getSimPoints();
+  if(sim_points >= position_trajectory.rows())
+    sim_points = position_trajectory.rows() / 2;
+  
+  double init_yaw = odom_helper->getOdomYaw();
+
+  double delta_x = position_trajectory(sim_points, 0) - position_trajectory(0, 0);
+  double delta_y = position_trajectory(sim_points, 1) - position_trajectory(0, 1);
+
+  double linear_vel;
+  double angular_vel;
+
+  double final_yaw; 
+
+
+
+  for (; ; ++sim_points)
+  {
+    if(sim_points > 2 * position_trajectory.rows())
+    {
+      drive_vel[0](0, 0) = drive_vel[0](1, 0) = 0;
+      ROS_DEBUG_NAMED("chomp_planner", "robot is near target, trajectory points: %d", position_trajectory.rows());
+      return;
+    }
+    linear_vel = sqrt(((delta_x * delta_x) + (delta_y * delta_y)) / (double(sim_points) * sim_period_ * double(sim_points) * sim_period_));
+
+    final_yaw = atan2(delta_y, delta_x);
+    angular_vel = (final_yaw - init_yaw) / ((double)sim_points * sim_period_);
+
+    if(linear_vel <= 0.22 && angular_vel <= 1.57)
+      break;
+  }
+
+  final_yaw = atan2(delta_y, delta_x);
+  angular_vel = (final_yaw - init_yaw) / ((double)sim_points * sim_period_);
+
+  if(fabs(final_yaw - init_yaw) > 0.2)
+    linear_vel = 0;
+  
+  /*if(fabs(final_yaw - init_yaw) > 0.2 && fabs(init_vel_x) > 0.0001)
+  {
+    ROS_DEBUG_NAMED("chomp_planner", "robot is in sharp turn, keep velocity");
+    drive_vel[0](0, 0) = init_vel_x;
+    drive_vel[0](1, 0) = init_vel_yaw;
+    return;
+  }*/
+
+  drive_vel[0](0, 0) = linear_vel;
+  drive_vel[0](1, 0) = angular_vel;
+
+  ROS_DEBUG_NAMED("chomp_planner", "chomp planner get cmd_vel: %f, %f", linear_vel, angular_vel);
+
+
+}
+
 
 
 }  // namespace chomp_local_planner

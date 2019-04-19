@@ -27,6 +27,8 @@
 #include <nav_msgs/Path.h>
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+
+#include <base_local_planner/odometry_helper_ros.h>
 using namespace std;
 using namespace Eigen;
 
@@ -55,7 +57,9 @@ public:
   std::vector<geometry_msgs::PoseStamped> findBestPath(const geometry_msgs::PoseStamped& global_pose,
                                                        std::string baseFrameID,
                                                        const geometry_msgs::PoseStamped& global_vel,
-                                                       std::vector<Vector2d>& drive_velocities, double yaw_initial);
+                                                       std::vector<Vector2d>& drive_velocities, base_local_planner::OdometryHelperRos *odom_helper);
+
+  bool checkTrajectory(Eigen::Vector3f pos, Eigen::Vector3f vel, Eigen::Vector3f vel_samples);
 
 private:
   base_local_planner::LocalPlannerUtil* planner_util_;
@@ -66,16 +70,30 @@ private:
 
   boost::mutex configuration_mutex_;
 
-  // bool checkTrajectory(Eigen::Vector3f pos, Eigen::Vector3f vel, Eigen::Vector3f vel_samples);
+ 
 
-  // base_local_planner::SimpleTrajectoryGenerator generator_;
-
-  // base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
 
   ros::NodeHandle nh;
   ros::Publisher preGlobalPath_pub;
 
   std::vector<geometry_msgs::Point> footprint_;
+
+  void getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, std::vector<Vector2d>& drive_velocities);
+
+  base_local_planner::SimpleTrajectoryGenerator generator_;
+  base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
+  base_local_planner::OscillationCostFunction oscillation_costs_;
+  base_local_planner::ObstacleCostFunction obstacle_costs_;
+  base_local_planner::MapGridCostFunction path_costs_;
+  base_local_planner::MapGridCostFunction goal_costs_;
+  base_local_planner::MapGridCostFunction goal_front_costs_;
+  base_local_planner::MapGridCostFunction alignment_costs_;
+  base_local_planner::TwirlingCostFunction twirling_costs_;
+  double pdist_scale_, gdist_scale_, occdist_scale_;
+  Eigen::Vector3f vsamples_;
+  double stop_time_buffer_;
+  double forward_point_distance_;
+  double cheat_factor_;
 };
 
 }  // namespace chomp_local_planner

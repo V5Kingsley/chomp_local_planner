@@ -42,6 +42,7 @@ CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turt
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/map_grid_cost_function.h
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/map_grid_visualizer.h
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/obstacle_cost_function.h
+CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/odometry_helper_ros.h
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/oscillation_cost_function.h
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/planar_laser_scan.h
 CMakeFiles/chomp_local_planner.dir/src/chomp_planner.cpp.o: /home/caiyufeng/turtlebot3_ws/src/navigation/base_local_planner/include/base_local_planner/simple_scored_sampling_planner.h
