@@ -1,3 +1,14 @@
+/**
+ * @file chomp_planner.cpp
+ * @author Kingsley
+ * @brief 
+ * @version 0.1
+ * @date 2019-04-23
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
+
 #include <base_local_planner/goal_functions.h>
 #include <chomp_local_planner/chomp_planner.h>
 #include <cmath>
@@ -82,62 +93,64 @@ CHOMPPlanner::CHOMPPlanner(std::string name, base_local_planner::LocalPlannerUti
   private_nh.param("cheat_factor", cheat_factor_, 1.0);
 }
 
-bool CHOMPPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan)
+bool CHOMPPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped> &orig_global_plan)
 {
   return planner_util_->setPlan(orig_global_plan);
 }
 
-void CHOMPPlanner::updatePlanAndLocalCosts(const geometry_msgs::PoseStamped& global_pose,
-                                           const std::vector<geometry_msgs::PoseStamped>& new_plan,
-                                           const std::vector<geometry_msgs::Point>& footprint_spec)
+void CHOMPPlanner::updatePlanAndLocalCosts(const geometry_msgs::PoseStamped &global_pose,
+                                           const std::vector<geometry_msgs::PoseStamped> &new_plan,
+                                           const std::vector<geometry_msgs::Point> &footprint_spec)
 {
   global_plan_.resize(new_plan.size());
   for (unsigned int i = 0; i < new_plan.size(); ++i)
   {
-    global_plan_[i] = new_plan[i]; 
+    global_plan_[i] = new_plan[i];
   }
-  
-   obstacle_costs_.setFootprint(footprint_spec);
 
-    // costs for going away from path
-    path_costs_.setTargetPoses(global_plan_);
+  obstacle_costs_.setFootprint(footprint_spec);
 
-    // costs for not going towards the local goal as much as possible
-    goal_costs_.setTargetPoses(global_plan_);
+  // costs for going away from path
+  path_costs_.setTargetPoses(global_plan_);
 
-    // alignment costs
-    geometry_msgs::PoseStamped goal_pose = global_plan_.back();
+  // costs for not going towards the local goal as much as possible
+  goal_costs_.setTargetPoses(global_plan_);
 
-    Eigen::Vector3f pos(global_pose.pose.position.x, global_pose.pose.position.y, tf2::getYaw(global_pose.pose.orientation));
-    double sq_dist =
-        (pos[0] - goal_pose.pose.position.x) * (pos[0] - goal_pose.pose.position.x) +
-        (pos[1] - goal_pose.pose.position.y) * (pos[1] - goal_pose.pose.position.y);
+  // alignment costs
+  geometry_msgs::PoseStamped goal_pose = global_plan_.back();
 
-    // we want the robot nose to be drawn to its final position
-    // (before robot turns towards goal orientation), not the end of the
-    // path for the robot center. Choosing the final position after
-    // turning towards goal orientation causes instability when the
-    // robot needs to make a 180 degree turn at the end
-    std::vector<geometry_msgs::PoseStamped> front_global_plan = global_plan_;
-    double angle_to_goal = atan2(goal_pose.pose.position.y - pos[1], goal_pose.pose.position.x - pos[0]);
-    front_global_plan.back().pose.position.x = front_global_plan.back().pose.position.x +
-      forward_point_distance_ * cos(angle_to_goal);
-    front_global_plan.back().pose.position.y = front_global_plan.back().pose.position.y + forward_point_distance_ *
-      sin(angle_to_goal);
+  Eigen::Vector3f pos(global_pose.pose.position.x, global_pose.pose.position.y, tf2::getYaw(global_pose.pose.orientation));
+  double sq_dist =
+      (pos[0] - goal_pose.pose.position.x) * (pos[0] - goal_pose.pose.position.x) +
+      (pos[1] - goal_pose.pose.position.y) * (pos[1] - goal_pose.pose.position.y);
 
-    goal_front_costs_.setTargetPoses(front_global_plan);
-    
-    // keeping the nose on the path
-    if (sq_dist > forward_point_distance_ * forward_point_distance_ * cheat_factor_) {
-      alignment_costs_.setScale(pdist_scale_);
-      // costs for robot being aligned with path (nose on path, not ju
-      alignment_costs_.setTargetPoses(global_plan_);
-    } else {
-      // once we are close to goal, trying to keep the nose close to anything destabilizes behavior.
-      alignment_costs_.setScale(0.0);
-    }
+  // we want the robot nose to be drawn to its final position
+  // (before robot turns towards goal orientation), not the end of the
+  // path for the robot center. Choosing the final position after
+  // turning towards goal orientation causes instability when the
+  // robot needs to make a 180 degree turn at the end
+  std::vector<geometry_msgs::PoseStamped> front_global_plan = global_plan_;
+  double angle_to_goal = atan2(goal_pose.pose.position.y - pos[1], goal_pose.pose.position.x - pos[0]);
+  front_global_plan.back().pose.position.x = front_global_plan.back().pose.position.x +
+                                             forward_point_distance_ * cos(angle_to_goal);
+  front_global_plan.back().pose.position.y = front_global_plan.back().pose.position.y + forward_point_distance_ *
+                                                                                            sin(angle_to_goal);
+
+  goal_front_costs_.setTargetPoses(front_global_plan);
+
+  // keeping the nose on the path
+  if (sq_dist > forward_point_distance_ * forward_point_distance_ * cheat_factor_)
+  {
+    alignment_costs_.setScale(pdist_scale_);
+    // costs for robot being aligned with path (nose on path, not ju
+    alignment_costs_.setTargetPoses(global_plan_);
+  }
+  else
+  {
+    // once we are close to goal, trying to keep the nose close to anything destabilizes behavior.
+    alignment_costs_.setScale(0.0);
+  }
 }
-
 
 void CHOMPPlanner::reconfigure(CHOMPPlannerConfig &config)
 {
@@ -235,41 +248,32 @@ bool CHOMPPlanner::checkTrajectory(
   return false;
   }
 
+
+/**
+ * @brief 得到优化后的局部路径和规划的速度
+ * 
+ * @param global_pose 
+ * @param baseFrameID 
+ * @param global_vel 
+ * @param drive_vel  输出规划的速度
+ * @param odom_helper  
+ * @return std::vector<geometry_msgs::PoseStamped> 返回优化后的路径
+ */
 std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
           const geometry_msgs::PoseStamped& global_pose, 
           std::string baseFrameID, 
           const geometry_msgs::PoseStamped& global_vel, 
-          std::vector<Vector2d>& drive_velocities, base_local_planner::OdometryHelperRos *odom_helper)
+          geometry_msgs::Twist &drive_vel, base_local_planner::OdometryHelperRos *odom_helper)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlanner findBestPath");
-  
   chomp_car_trajectory::ChompTrajectory trajectory(global_plan_, odom_helper->getOdomYaw(), sim_period_);
 
   ChompOptimizer chompOptimizer(&trajectory, planner_util_);
   chompOptimizer.optimize();
 
-  /*chomp_obstacle::ChompObstacle chomp_obstacle(planner_util_->getCostmap(), 0.5);
-  Eigen::MatrixXd local_trajectory = trajectory.getTrajectory();
-
-  chomp_obstacle.viewCostMap();
-  double wx,wy,distance;
-  for(int i = 0; i < trajectory.getNumPoints(); ++i)
-  {
-    global_plan_[i].pose.position.x = local_trajectory(i, 0);
-    global_plan_[i].pose.position.y = local_trajectory(i, 1);
-    chomp_obstacle.getMinDistanceAndCoordinate(local_trajectory(i, 0), local_trajectory(i, 1), distance, wx, wy);
-  }
-  chomp_obstacle.viewCostMap();*/
-
-  //chomp_obstacle_layer::ChompObstacleLayer obstacle_layer(planner_util_->getCostmap(), 0.3);
-  
-  //obstacle_layer.viewCostMap();
-  //obstacle_layer.viewObstacleCells();
-
-  getCmdVel(trajectory.getTrajectory(), odom_helper, drive_velocities);
+  getCmdVel(trajectory.getTrajectory(), odom_helper, drive_vel);
 
   Eigen::MatrixXd local_trajectory = trajectory.getTrajectory();
-  double wx,wy,distance;
+
   for(int i = 0; i < trajectory.getNumPoints(); ++i)
   {
     global_plan_[i].pose.position.x = local_trajectory(i, 0);
@@ -277,81 +281,89 @@ std::vector<geometry_msgs::PoseStamped> CHOMPPlanner::findBestPath(
   }
   return global_plan_;
 }
-
-void CHOMPPlanner::getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, std::vector<Vector2d>& drive_vel)
+/**
+ * @brief 从给定的轨迹中计算出初速度
+ * 
+ * @param position_trajectory 
+ * @param odom_helper 
+ * @param cmd_vel 
+ */
+void CHOMPPlanner::getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, geometry_msgs::Twist &cmd_vel)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "chomp planner get cmd_vel");
+  static bool stop_to_rotate = false;
 
-  drive_vel.resize(1);
-  geometry_msgs::PoseStamped robot_vel;
-  odom_helper->getRobotVel(robot_vel);
-  double init_vel_x = robot_vel.pose.position.x;
-  double init_vel_yaw = tf2::getYaw(robot_vel.pose.orientation);
+  double init_vel_x = vel_last_time_.linear.x;
+  double init_vel_yaw = vel_last_time_.angular.z;
 
   if(position_trajectory.rows() <= 5)
   {
-    drive_vel[0](0, 0) = init_vel_x;
-    drive_vel[0](1, 0) = init_vel_yaw;
+    //should perform deceleration motion
+    cmd_vel.linear.x = init_vel_x;
+    cmd_vel.angular.z = init_vel_yaw;
+
+    vel_last_time_.linear.x = vel_last_time_.angular.z = 0;
     return;
   }
-
 
   int sim_points = ChompParameters::getSimPoints();
   if(sim_points >= position_trajectory.rows())
     sim_points = position_trajectory.rows() / 2;
   
   double init_yaw = odom_helper->getOdomYaw();
+  double final_yaw; 
 
   double delta_x = position_trajectory(sim_points, 0) - position_trajectory(0, 0);
   double delta_y = position_trajectory(sim_points, 1) - position_trajectory(0, 1);
 
-  double linear_vel;
-  double angular_vel;
+  final_yaw = atan2(delta_y, delta_x);
 
-  double final_yaw; 
-
-
+  double linear_vel, angular_vel;
 
   for (; ; ++sim_points)
   {
-    if(sim_points > 2 * position_trajectory.rows())
-    {
-      drive_vel[0](0, 0) = drive_vel[0](1, 0) = 0;
-      ROS_DEBUG_NAMED("chomp_planner", "robot is near target, trajectory points: %d", position_trajectory.rows());
-      return;
-    }
     linear_vel = sqrt(((delta_x * delta_x) + (delta_y * delta_y)) / (double(sim_points) * sim_period_ * double(sim_points) * sim_period_));
 
-    final_yaw = atan2(delta_y, delta_x);
     angular_vel = (final_yaw - init_yaw) / ((double)sim_points * sim_period_);
 
-    if(linear_vel <= 0.22 && angular_vel <= 1.57)
+    if(fabs(linear_vel) <= ChompParameters::getMaxVelX() && fabs(angular_vel) <= 1.0)
       break;
   }
 
-  final_yaw = atan2(delta_y, delta_x);
-  angular_vel = (final_yaw - init_yaw) / ((double)sim_points * sim_period_);
-
-  if(fabs(final_yaw - init_yaw) > 0.2)
-    linear_vel = 0;
-  
-  /*if(fabs(final_yaw - init_yaw) > 0.2 && fabs(init_vel_x) > 0.0001)
+  if(fabs(final_yaw - init_yaw) > 0.5)
   {
-    ROS_DEBUG_NAMED("chomp_planner", "robot is in sharp turn, keep velocity");
-    drive_vel[0](0, 0) = init_vel_x;
-    drive_vel[0](1, 0) = init_vel_yaw;
-    return;
-  }*/
+    stop_to_rotate = true;
+    ROS_INFO("consider rotate. yaw: %f, final_yaw: %f, init_yaw: %f", final_yaw - init_yaw, final_yaw / 3.1415 * 180.0, init_yaw / 3.1415 * 180.0);
+  }
 
-  drive_vel[0](0, 0) = linear_vel;
-  drive_vel[0](1, 0) = angular_vel;
+  if(stop_to_rotate)
+  {
+    if(fabs(final_yaw - init_yaw) < 0.1)
+      stop_to_rotate = false;
+  }
+
+  if(stop_to_rotate)
+  {
+    linear_vel = 0;
+    ROS_INFO("consider rotate. yaw: %f", final_yaw - init_yaw);
+  }
+  else
+  {
+    if(fabs(final_yaw - init_yaw) > 0.2)
+    {
+      ROS_INFO("consider deceleration. yaw: %f", final_yaw - init_yaw);
+      if(linear_vel >= 0.01)
+        linear_vel -= 0.01;
+    }
+  }
+
+  cmd_vel.linear.x = linear_vel;
+  cmd_vel.angular.z = angular_vel;
+
+  vel_last_time_.linear.x = linear_vel;
+  vel_last_time_.angular.z = angular_vel;
 
   ROS_DEBUG_NAMED("chomp_planner", "chomp planner get cmd_vel: %f, %f", linear_vel, angular_vel);
-
-
 }
-
-
 
 }  // namespace chomp_local_planner
 

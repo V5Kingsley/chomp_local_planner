@@ -55,20 +55,14 @@ add_library(chomp_car_trajectory src/chomp_car_trajectory.cpp)
 
 add_library(chomp_parameters src/chomp_parameters.cpp)
 
-#add_library(chomp_obstacle src/chomp_obstacle.cpp)
-
 add_library(chomp_obstalce_layer src/chomp_obstacle_layer.cpp)
 
 add_library(stomp_cost src/stomp_cost.cpp)
-#target_link_libraries(stomp_cost chomp_car_trajectory)
 
 add_library(chomp_optimizer src/chomp_optimizer.cpp)
-#target_link_libraries(chomp_optimizer chomp_car_trajectory chomp_parameters)
 
 add_library(chomp_local_planner src/chomp_planner.cpp src/chomp_planner_ros.cpp)
 target_link_libraries(chomp_local_planner chomp_car_trajectory chomp_parameters chomp_optimizer stomp_cost chomp_obstalce_layer)
-
-
 
 add_dependencies(chomp_local_planner ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(chomp_local_planner ${catkin_LIBRARIES})

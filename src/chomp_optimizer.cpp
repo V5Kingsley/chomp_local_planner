@@ -1,3 +1,14 @@
+/**
+ * @file chomp_optimizer.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2019-04-23
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
+
 #include <chomp_local_planner/chomp_optimizer.h>
 
 //#define LOGGER_DEBUG
@@ -83,25 +94,24 @@ bool ChompOptimizer::optimize()
 			best_group_trajectory_cost = cost;
 		}
 
+		//连续无碰撞最大次数后才退出
 		if(is_collision_free_ == true)
 		{
 			num_collision_free_iterations_++;
 			if(num_collision_free_iterations_ >= ChompParameters::getMaxIterationsAfterCollision())
 				break;
 		}
-		else
+		else   //如果中间有间断，重置为0
 		{
 			num_collision_free_iterations_ = 0;
 		}
 		
-
 		calculateCollisionIncrements();
 
 		calculateSmoothnessIncrements();
 
 		addIncrementsToTrajectory();
 
-		//handleVelLimits();
 		handleLimits();
 		/*
 				// 用于生成txt文档
@@ -125,6 +135,7 @@ bool ChompOptimizer::optimize()
 		//MATRIX_DEBUG("group_trajectory", group_trajectory_.getTrajectory());
 	}
 
+//未优化出轨迹时，将原始轨迹输出
 	//if(is_collision_free_)
 	if(true)
 	{
@@ -305,8 +316,6 @@ void ChompOptimizer::calculateCollisionIncrements()
 			collision_increments_.row(i - free_vars_start_).transpose() -=
           jacobian.transpose() * potential_gradient;
 		}
-		
-
 	}
 }
 
@@ -323,18 +332,10 @@ void ChompOptimizer::getJacobian(int trajectory_point, int j,
 
 void ChompOptimizer::getMotionLimits()
 {
-	/*limits_ = planner_util_->getCurrentLimits();
-	max_vel_x_ = limits_.max_vel_x;
-	min_vel_x_ = limits_.min_vel_x;
-	max_vel_theta_ = limits_.max_vel_theta;
-	min_vel_theta_ = limits_.min_vel_theta;*/
-
 	max_vel_x_ = ChompParameters::getMaxVelX();
 	max_vel_theta_ = ChompParameters::getMaxVelTheta();
 	double discretization = full_trajectory_->getDiscretization();
 	max_theta_ = max_vel_theta_ * discretization;
-
-	
 }
 /*
 void ChompOptimizer::handleVelLimits()
@@ -393,56 +394,11 @@ void ChompOptimizer::handleVelLimits()
 
 void ChompOptimizer::handleLimits()
 {
-	/*for (int i = free_vars_start_ + 1; i <= free_vars_end_; i++)
-	{
-		if (group_trajectory_(i, 2) - group_trajectory_(i - 1, 2) > max_theta_)
-		{
-			group_trajectory_(i, 2) = group_trajectory_(i - 1, 2) + max_theta_;
-		}
-		else if (group_trajectory_(i, 2) - group_trajectory_(i - 1, 2) < -max_theta_)
-		{
-			group_trajectory_(i, 2) = group_trajectory_(i - 1, 2) - max_theta_;
-		}
-
-		double discretization = full_trajectory_->getDiscretization();
-
-		double delta_x = group_trajectory_(i, 0) - group_trajectory_(i - 1, 0);
-		double delta_y = group_trajectory_(i, 1) - group_trajectory_(i - 1, 1);
-		double vel = sqrt((delta_x * delta_x + delta_y * delta_y) / (discretization * discretization));
-		//if(vel > 3.0 * max_vel_x_)
-		//{
-		//	ROS_INFO("vel: %f, max_vel_x: %f", vel, max_vel_x_);
-		//	vel = max_vel_x_;
-	//	}
-		double vel_x = vel * cos(group_trajectory_(i, 2));
-		double vel_y = vel * sin(group_trajectory_(i, 2));
-		double max_x = fabs(vel_x * discretization);
-		double max_y = fabs(vel_y * discretization);
-
-		if(group_trajectory_(i, 0) - group_trajectory_(i - 1, 0) > max_x)
-		{
-			group_trajectory_(i, 0) = group_trajectory_(i - 1, 0) + max_x;
-		}
-		else if(group_trajectory_(i, 0) - group_trajectory_(i - 1, 0) < -max_x)
-		{
-			group_trajectory_(i, 0) = group_trajectory_(i - 1, 0) - max_x;
-		}
-
-		if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) > max_y)
-		{
-			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) + max_y;
-		}
-		else if(group_trajectory_(i, 1) - group_trajectory_(i - 1, 1) < -max_y)
-		{
-			group_trajectory_(i, 1) = group_trajectory_(i - 1, 1) - max_y;
-		}
-	}*/
-
 	for (int i = 0; i < NUM_POSITION_PLAN; ++i)
 	{
 		for (int j = free_vars_start_ + 1; j < free_vars_end_; ++j)
 		{
-			group_trajectory_(j, i) = (group_trajectory_(j - 1, i) + group_trajectory_(j + 1, i)) / 2.0;
+			group_trajectory_(j, i) = (group_trajectory_(j - 1, i) + group_trajectory_(j, i) + group_trajectory_(j + 1, i)) / 3.0;
 		}
 	}
 }

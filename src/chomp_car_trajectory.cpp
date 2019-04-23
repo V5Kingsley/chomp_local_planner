@@ -72,7 +72,6 @@ ChompTrajectory::ChompTrajectory(const ChompTrajectory &source_traj, int diff_ru
  */
 void ChompTrajectory::fillTrajectory(const vector<geometry_msgs::PoseStamped> &global_plan, double initial_yaw)
 {
-  ROS_DEBUG_NAMED("chomp_trajectory", "chomp fill trajectory");
   for (int i = 0; i < num_points_ - 1; ++i)
   {
     trajectory_(i, 0) = global_plan[i].pose.position.x;

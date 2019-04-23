@@ -22,8 +22,6 @@ CHOMPPlannerROS::CHOMPPlannerROS() : initialized_(false), setup_(false), odom_he
 
 void CHOMPPlannerROS::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS initialize function");
-
   if (!isInitialized())
   {
     ros::NodeHandle private_nh("~" + name);
@@ -59,7 +57,6 @@ void CHOMPPlannerROS::initialize(std::string name, tf2_ros::Buffer *tf, costmap_
         config_nh.getParam("theta_stopped_vel", limits.theta_stopped_vel);
         planner_util_.reconfigureCB(limits, false);
     */
-    ROS_DEBUG_NAMED("chomp_planner", "planner_util_ initialized");
 
     cp_ = boost::shared_ptr<CHOMPPlanner>(new CHOMPPlanner(name, &planner_util_));
 
@@ -83,8 +80,6 @@ void CHOMPPlannerROS::initialize(std::string name, tf2_ros::Buffer *tf, costmap_
 
 bool CHOMPPlannerROS::setPlan(const std::vector<geometry_msgs::PoseStamped> &orig_global_plan)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS setPlan function");
-
   if (!isInitialized())
   {
     ROS_ERROR("This planner has not been initialized, please call initialize() before using this planner");
@@ -100,8 +95,6 @@ bool CHOMPPlannerROS::setPlan(const std::vector<geometry_msgs::PoseStamped> &ori
 
 bool CHOMPPlannerROS::isGoalReached()
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS isGoalReached function");
-
   if (! isInitialized()) {
       ROS_ERROR("This planner has not been initialized, please call initialize() before using this planner");
       return false;
@@ -122,8 +115,6 @@ bool CHOMPPlannerROS::isGoalReached()
 
 bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS computeVelocityCommands function");
-
   if (!costmap_ros_->getRobotPose(current_pose_))
   {
     ROS_ERROR("Could not get robot pose");
@@ -185,8 +176,6 @@ bool CHOMPPlannerROS::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 bool CHOMPPlannerROS::chompComputeVelocityCommands(geometry_msgs::PoseStamped &global_pose,
                                                    geometry_msgs::Twist &cmd_vel)
 {
-  ROS_DEBUG_NAMED("chomp_planner", "CHOMPPlannerROS chompComputeVelocityCommands function");
-
   if (!isInitialized())
   {
     ROS_ERROR("This planner has not been initialized, please call initialize() before using this planner");
@@ -199,13 +188,13 @@ bool CHOMPPlannerROS::chompComputeVelocityCommands(geometry_msgs::PoseStamped &g
   // ROS_DEBUG_NAMED("chomp_planner", "robot_vel: %f, %f, %f", robot_vel.pose.position.x, robot_vel.pose.position.y,
   // robot_vel.pose.orientation);
 
-  std::vector<Vector2d> drive_cmds;
+  geometry_msgs::Twist drive_cmd;
   std::string baseFrameID = costmap_ros_->getBaseFrameID();
 
   ros::Time last_time = ros::Time::now();
 
   std::vector<geometry_msgs::PoseStamped> local_plan =
-      cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmds, &odom_helper_);
+      cp_->findBestPath(global_pose, baseFrameID, robot_vel, drive_cmd, &odom_helper_);
 
   ros::Time current_time = ros::Time::now();
 
@@ -213,23 +202,8 @@ bool CHOMPPlannerROS::chompComputeVelocityCommands(geometry_msgs::PoseStamped &g
 
   publishLocalPlan(local_plan);
 
-  /*for(int i = 0; i < 10; ++i)
-  {
-    geometry_msgs::Twist cmd_compute;
-    cmd_compute.linear.x = drive_cmds[i](0, 0);
-    cmd_compute.angular.z = drive_cmds[i](1, 0);
-    vel_pub_.publish(cmd_compute);
-    ros::Duration(0.1).sleep();
-  }*/
-
- /* if (true)
-  {
-    ROS_INFO_ONCE("one loop control, point num: %d", static_cast<int>(drive_cmds.size()));
-    ros::Duration(5.0).sleep();
-  }*/
-
-  cmd_vel.linear.x = drive_cmds[0](0, 0);
-  cmd_vel.angular.z = drive_cmds[0](1, 0);
+  cmd_vel.linear.x = drive_cmd.linear.x;
+  cmd_vel.angular.z = drive_cmd.angular.z;
 
   return true;
 }

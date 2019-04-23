@@ -1,3 +1,14 @@
+/**
+ * @file chomp_planner.h
+ * @author Kingsley
+ * @brief 
+ * @version 0.1
+ * @date 2019-04-23
+ * 
+ * @copyright Copyright (c) 2019
+ * 
+ */
+
 #ifndef CHOMP_LOCAL_PALNNER_CHOMP_LOCAL_PLANNER_H_
 #define CHOMP_LOCAL_PALNNER_CHOMP_LOCAL_PLANNER_H_
 
@@ -57,7 +68,7 @@ public:
   std::vector<geometry_msgs::PoseStamped> findBestPath(const geometry_msgs::PoseStamped& global_pose,
                                                        std::string baseFrameID,
                                                        const geometry_msgs::PoseStamped& global_vel,
-                                                       std::vector<Vector2d>& drive_velocities, base_local_planner::OdometryHelperRos *odom_helper);
+                                                       geometry_msgs::Twist &drive_vel, base_local_planner::OdometryHelperRos *odom_helper);
 
   bool checkTrajectory(Eigen::Vector3f pos, Eigen::Vector3f vel, Eigen::Vector3f vel_samples);
 
@@ -78,7 +89,7 @@ private:
 
   std::vector<geometry_msgs::Point> footprint_;
 
-  void getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, std::vector<Vector2d>& drive_velocities);
+  void getCmdVel(Eigen::MatrixXd &position_trajectory, base_local_planner::OdometryHelperRos *odom_helper, geometry_msgs::Twist &cmd_vel);
 
   base_local_planner::SimpleTrajectoryGenerator generator_;
   base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
@@ -94,6 +105,8 @@ private:
   double stop_time_buffer_;
   double forward_point_distance_;
   double cheat_factor_;
+
+  geometry_msgs::Twist vel_last_time_;
 };
 
 }  // namespace chomp_local_planner

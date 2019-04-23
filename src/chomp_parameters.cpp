@@ -46,8 +46,6 @@ RobotParameter::RobotParameter()
 
   vertex_[3] << robot_length_ / 2.0, -robot_width_ / 2.0;
 
-  ROS_INFO("robot footprint: (%f, %f), (%f, %f), (%f, %f), (%f, %f),", vertex_[0][0], vertex_[0][1], vertex_[1][0], vertex_[1][1], vertex_[2][0], vertex_[2][1], vertex_[3][0], vertex_[3][1]);
-
 }
 
 
